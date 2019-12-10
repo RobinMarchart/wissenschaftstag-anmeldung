@@ -10,7 +10,7 @@ function WorkshopCard(props){
     </Card.Header>
     <Card.Body>
     <Media>
-    <img width={128} height={128} className="mr-3" src={props.Image["src"]} alt={props.Image["alt"]}/>
+    <img width={128} height={128} className="mr-3" src={props.Image.src} alt={props.Image.alt}/>
     <Media.Body>
         <div className="workshop-card-body">
     {props.children}
