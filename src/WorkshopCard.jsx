@@ -1,8 +1,9 @@
 import React from "react";
 import {Card,Media} from "react-bootstrap";
+import ReactMarkdown from 'react-markdown/with-html';
 import './WorkshopCard.css'
 
-function WorkshopCard(props){
+export default function WorkshopCard(props){
     return <div className="workshop-card">
         <Card>
     <Card.Header as="h4">
@@ -10,19 +11,17 @@ function WorkshopCard(props){
     </Card.Header>
     <Card.Body>
     <Media>
-    <img width={128} height={128} className="mr-3" src={props.Image.src} alt={props.Image.alt}/>
+    <img width={128} height={128} className="mr-3" src={URL.createObjectURL(props.Image.src)} alt={props.Image.alt}/>
     <Media.Body>
         <div className="workshop-card-body">
-    {props.children}
+        <ReactMarkdown escapeHtml={false} source={props.Description}></ReactMarkdown>
         </div>
     </Media.Body>
     </Media>
     </Card.Body>
     <Card.Footer>
-    {props.Authors}
+    Von {props.Authors.join(" & ")}
     </Card.Footer>
     </Card>
     </div>;
 }
-
-export default WorkshopCard;

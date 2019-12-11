@@ -4,11 +4,12 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import workshops from './_Anmeldung.zip';
+import workshops from './workshops.zip';
 import WorkshopsList from './WorkshopsList';
 
 async function init(){
-ReactDOM.render(<App workshops={await WorkshopsList(workshops)}/>, document.getElementById('root'));
+    let workshopsList=await WorkshopsList(workshops)
+    ReactDOM.render(<App workshops={workshopsList}/>, document.getElementById('root'));
 }
 
 init().then(()=>serviceWorker.unregister()).catch(reason=>console.error(reason));

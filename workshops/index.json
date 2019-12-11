@@ -1,0 +1,20 @@
+[
+	{
+		"title":"Umfrage",
+		"authors":["Hanna Hoogen", "Robin Marchart"],
+		"image":{
+			"src":"Survey/Ente.jpg",
+			"alt":"🦆"
+		},
+		"description":"Survey/Description.md"
+	},
+	{
+		"title":"Umfrage2",
+		"authors":["Hanna Hoogen", "Robin Marchart"],
+		"image":{
+			"src":"Survey/Ente.jpg",
+			"alt":"🦆"
+		},
+		"description":"Survey/Description.md"
+	}
+]

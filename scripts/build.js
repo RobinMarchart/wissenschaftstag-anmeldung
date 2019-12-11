@@ -48,8 +48,9 @@ const config = configFactory('production');
 
 // We require that you explicitly set browsers and do not fall back to
 // browserslist defaults.
+const create_zip=require("./zip_workshops");
 const { checkBrowsers } = require('react-dev-utils/browsersHelper');
-checkBrowsers(paths.appPath, isInteractive)
+checkBrowsers(paths.appPath, isInteractive).then(create_zip)
   .then(() => {
     // First, read the current file sizes in build directory.
     // This lets us display how much they changed later.
