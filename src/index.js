@@ -9,7 +9,7 @@ import WorkshopsList from './WorkshopsList';
 
 async function init(){
     let workshopsList=await WorkshopsList(workshops)
-    ReactDOM.render(<App workshops={workshopsList}/>, document.getElementById('root'));
+    ReactDOM.render(<App Workshops={workshopsList} Classes={["extern","10a","10b"]}/>, document.getElementById('root'));
 }
 
 init().then(()=>serviceWorker.unregister()).catch(reason=>console.error(reason));

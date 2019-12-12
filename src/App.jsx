@@ -9,9 +9,9 @@ function App(props) {
     <div className="app">
       <Container>
       <div className={"workshop-list"}>
-      {props.workshops.map((x,y)=><Workshop key={y.toString()} Workshop={x}></Workshop>)}
+      {props.Workshops.map((x,y)=><Workshop key={y.toString()} Workshop={x}></Workshop>)}
       </div>
-      <WorkshopForm>
+      <WorkshopForm Classes={props.Classes}>
       </WorkshopForm>
     </Container>
     </div>

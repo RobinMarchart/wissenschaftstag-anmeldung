@@ -5,6 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome",
+            "url": "http://localhost:3000/",
+            "webRoot": "${workspaceFolder}/build"
+        },
+
+        {
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
@@ -13,11 +21,7 @@
                 "<node_internals>/**"
             ]
         },
-        {
-            "type": "firefox",
-            "request": "attach",
-            "name": "Attach"
-        }
+        
         
     ]
 }
