@@ -4,13 +4,14 @@
   "homepage": ".",
   "dependencies": {
     "express": "^4.17.1",
-    "jszip": "^3.2.2"
+    "jszip": "^3.2.2",
+    "tmp": "^0.1.0"
   },
   "files": [
     "server"
   ],
   "license": "MIT",
-  "main": "server/main.js",
+  "main": "server/main.mjs",
   "bin": "worshop-anmeldung-server",
   "devDependencies": {
     "@babel/core": "7.7.4",
@@ -31,6 +32,7 @@
     "bootstrap": "^4.4.1",
     "camelcase": "^5.3.1",
     "case-sensitive-paths-webpack-plugin": "2.2.0",
+    "concurrently": "^5.0.1",
     "css-loader": "3.2.0",
     "dotenv": "8.2.0",
     "dotenv-expand": "5.1.0",
@@ -78,9 +80,11 @@
     "workbox-webpack-plugin": "4.3.1"
   },
   "scripts": {
-    "start": "node scripts/start.js",
+    "start-client": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "start-server": "node server/main.mjs 4000 workshops out",
+    "start": "concurrently -k \"yarn start-client\" \"yarn start-server\""
   },
   "eslintConfig": {
     "extends": "react-app"

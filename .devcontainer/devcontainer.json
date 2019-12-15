@@ -25,5 +25,8 @@
 	"extensions": [
 		"dbaeumer.vscode-eslint"
 	],
-	"appPort": "3000:3000"
+	"appPort": [
+		"3000:3000",
+		"4000:4000"
+	]
 }

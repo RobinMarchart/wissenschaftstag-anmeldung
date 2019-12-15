@@ -24,5 +24,5 @@ for (const dirent of dir){
 }
 await Promise.all(dirs);
 }
-
-module.exports=zip;
+var disabled=true
+module.exports=(disabled)?new Promise((resolve,reject)=>resolve()):zip;
