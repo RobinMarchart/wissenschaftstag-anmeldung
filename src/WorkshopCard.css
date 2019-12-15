@@ -4,3 +4,11 @@
 .workshop-card{
     margin: 10pt 0;
 }
+.workshop-card-accordion-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.workshop-card-accordion-header>h4{
+    margin: 0;
+}

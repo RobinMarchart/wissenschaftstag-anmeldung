@@ -1,6 +1,8 @@
 import React from "react";
 import {Card,Media,Accordion} from "react-bootstrap";
 import ReactMarkdown from 'react-markdown/with-html';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faAngleLeft,faAngleDown} from '@fortawesome/free-solid-svg-icons'
 import './WorkshopCard.css'
 
 function WorkshopBody(props){
@@ -32,22 +34,35 @@ export function WorkshopCard(props){
     </div>;
 }
 
-export function AccordionWorkshopCard(props){
-    return <div className="workshop-card">
+export class AccordionWorkshopCard extends React.Component{
+
+    constructor(props){
+        super(props)
+        this.state={collapsed:true};
+        
+    }
+
+    render(){
+        return <div className="workshop-card">
     <Card>
-    <Accordion.Toggle as={Card.Header} eventKey={props.Key.toString()}>
+    <Accordion.Toggle as={Card.Header} eventKey={this.props.Key.toString()} onClick={()=>this.setState({collapsed:!this.state.collapsed})}>
+    <div className="workshop-card-accordion-header">
     <h4>
-    {props.Workshop.title}
+    {this.props.Workshop.title}
     </h4>
+    <FontAwesomeIcon icon={(this.state.collapsed)?faAngleLeft:faAngleDown} size="lg"></FontAwesomeIcon>
+    </div>
     </Accordion.Toggle>
-    <Accordion.Collapse eventKey={props.Key.toString()}>
+    <Accordion.Collapse eventKey={this.props.Key.toString()}>
     <div>
-    <WorkshopBody Image={props.Workshop.image} Description={props.Workshop.description}/>
+    <WorkshopBody Image={this.props.Workshop.image} Description={this.props.Workshop.description}/>
     <Card.Footer>
-    Von {props.Workshop.authors.join(" & ")}
+    Von {this.props.Workshop.authors.join(" & ")}
     </Card.Footer>
     </div>
     </Accordion.Collapse>
     </Card>
     </div>;
+    }
 }
+
