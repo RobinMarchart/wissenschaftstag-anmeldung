@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "homepage": ".",
   "dependencies": {
+    "express": "^4.17.1",
     "jszip": "^3.2.2"
   },
   "files": [
@@ -10,6 +11,7 @@
   ],
   "license": "MIT",
   "main": "server/main.js",
+  "bin": "worshop-anmeldung-server",
   "devDependencies": {
     "@babel/core": "7.7.4",
     "@fortawesome/fontawesome-svg-core": "^1.2.26",
