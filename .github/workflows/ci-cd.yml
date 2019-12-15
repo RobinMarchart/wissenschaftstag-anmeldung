@@ -32,4 +32,4 @@ jobs:
       env:
         EMAIL: robin.marchart@hotmail.com               
         GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        BUILD_DIR: slides/
+        BUILD_DIR: build/
