@@ -5,6 +5,16 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "firefox",
+            "request": "launch",
+            "reAttach": true,
+            "keepProfileChanges": true,
+            "profile": "dev",
+            "name": "Launch Firefox",
+            "url": "http://localhost:3000/",
+            "webRoot": "${workspaceFolder}/public"
+        },
+        {
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome",
@@ -13,17 +23,7 @@
             "linux": {
                 "runtimeExecutable":"/usr/bin/chromium"
             }
-        },
-
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}/scripts/zip_workshops.js",
-            "skipFiles": [
-                "<node_internals>/**"
-            ]
-        },
+        }
         
         
     ]
