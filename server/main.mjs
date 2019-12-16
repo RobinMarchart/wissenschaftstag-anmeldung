@@ -42,7 +42,7 @@ async function buildStaticFiles(){
     await new Promise((resolve,reject)=>zip.generateNodeStream({compression:"DEFLATE",compressionOptions:{level:9},streamFiles:true})
     .pipe(hash).pipe(fs.createWriteStream(tmpfile.name))
     .on("finish",resolve).on("error",reject));
-    let name=hash.digest('hex').slice(0,11)+".json";
+    let name=hash.digest('hex').slice(0,11)+".zip";
     return[JSON,name,watch]
 }
 
@@ -72,13 +72,16 @@ async function run(){
     }(eventType,filename,staticFiles,watched))));
     var app=express();
     app.get("/",function(req,res){
+        res.set("Access-Control-Allow-Origin","*");
         res.redirect("zip/"+staticFiles[1]);
     });
     app.get("/key",function(req,res){
+        res.set("Access-Control-Allow-Origin","*");
         res.set('Accept','text/plain');
         res.sendFile("key.asc")
     });
     app.get("/zip/*",function(req,res){
+        res.set("Access-Control-Allow-Origin","*");
         if(!req.originalUrl.endsWith(staticFiles[1]))res.sendStatus(404);
         res.set("Cache-Control","public")
         res.sendFile(tmpfile.name);
@@ -90,6 +93,7 @@ async function run(){
         .then(()=>console.log("received registration"));
     });
     app.listen(port);
+    console.log("server ready")
 }
 
 run().catch(function(e){

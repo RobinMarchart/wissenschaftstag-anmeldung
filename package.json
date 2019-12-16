@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "homepage": ".",
   "dependencies": {
+    "@std/esm": "^0.26.0",
+    "axios": "^0.19.0",
     "express": "^4.17.1",
     "jszip": "^3.2.2",
     "tmp": "^0.1.0"
@@ -45,6 +47,7 @@
     "eslint-plugin-react": "7.16.0",
     "eslint-plugin-react-hooks": "^1.6.1",
     "file-loader": "4.3.0",
+    "fira": "https://github.com/mozilla/Fira.git",
     "fs-extra": "^8.1.0",
     "html-webpack-plugin": "4.0.0-beta.5",
     "identity-obj-proxy": "3.0.0",
@@ -83,7 +86,7 @@
     "start-client": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
-    "start-server": "node server/main.mjs 4000 workshops out",
+    "start-server": "node server/bootstrap.js 4000 workshops out",
     "start": "concurrently -k \"yarn start-client\" \"yarn start-server\""
   },
   "eslintConfig": {
@@ -144,6 +147,7 @@
       "json",
       "web.jsx",
       "jsx",
+      "mjs",
       "node"
     ],
     "watchPlugins": [

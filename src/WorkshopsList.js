@@ -1,4 +1,5 @@
 import JSZip from 'jszip';
+import axios from "axios";
 
 async function flatten(array){
 let r=[];
@@ -10,9 +11,8 @@ return r;
 }
 
 export default async function generate_List(url){
-var response=await fetch(url);
-if (!response.ok)throw new Error(response.status+':'+response.statusText);
-var zip=await new JSZip.loadAsync(await response.blob());
+var response=await axios.get(url);
+var zip=await new JSZip.loadAsync(response.data);
 zip.forEach((x,y)=>console.debug(x));
 var content=await zip.file("index.json").async("string");
 console.debug(content);

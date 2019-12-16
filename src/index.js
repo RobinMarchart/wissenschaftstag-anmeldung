@@ -6,14 +6,10 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import WorkshopsList from './WorkshopsList';
 
-if (window.baseUrl===undefined)window.baseUrl="localhost:4000/"
+if (window.baseUrl===undefined)window.baseUrl="http://localhost:4000/"
 
-async function init(){
-    let workshopsList=await WorkshopsList(window.baseUrl)
-    ReactDOM.render(<App Workshops={workshopsList} Classes={["extern","10a","10b"]}/>, document.getElementById('root'));
-}
-
-init().then(()=>serviceWorker.unregister()).catch(reason=>console.error(reason));
+ReactDOM.render(<App Promise={WorkshopsList}/>, document.getElementById('root'));
+serviceWorker.unregister();
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

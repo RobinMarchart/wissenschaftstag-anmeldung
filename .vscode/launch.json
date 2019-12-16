@@ -4,6 +4,13 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+    {
+        "type": "node",
+        "request": "launch",
+        "name": "Launch Server",
+        "program": "${workspaceFolder}/server/bootstrap.js",
+        "args": ["4000","workshops","out"]
+    },
         {
             "type": "firefox",
             "request": "launch",
