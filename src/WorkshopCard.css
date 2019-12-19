@@ -29,3 +29,16 @@
         height: 64px;
     }
 }
+
+.workshop-header-float-group{
+    display: flex;
+    align-content: center;
+}
+
+.buffer{
+    width: 10px;
+}
+
+.workshop-header-float-group>.badge{
+    height: 19px;
+}

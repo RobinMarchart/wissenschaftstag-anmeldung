@@ -1,5 +1,5 @@
 import React from "react";
-import {Card,Media,Accordion} from "react-bootstrap";
+import {Card,Media,Accordion,Badge} from "react-bootstrap";
 import ReactMarkdown from 'react-markdown/with-html';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faAngleLeft,faAngleDown} from '@fortawesome/free-solid-svg-icons'
@@ -22,9 +22,13 @@ export function WorkshopCard(props){
     return <div className="workshop-card">
         <Card>
     <Card.Header>
+    <div className="workshop-header-float-group">
     <h5>
     {props.Workshop.title}
     </h5>
+    <div className="buffer"></div>
+    <Badge variant="secondary">{props.Workshop.short?"45 Min.":"90 Min."}</Badge>
+    </div>
     </Card.Header>
     <WorkshopBody Image={props.Workshop.image} Description={props.Workshop.description}/>
     <Card.Footer>
@@ -47,9 +51,13 @@ export class AccordionWorkshopCard extends React.Component{
     <Card>
     <Accordion.Toggle as={Card.Header} eventKey={this.props.Key.toString()} onClick={()=>this.setState({collapsed:!this.state.collapsed})}>
     <div className="workshop-card-accordion-header">
+    <div className="workshop-header-float-group">
     <h4>
-    {this.props.Workshop.title}
+    {this.props.Workshop.title} 
     </h4>
+    <div className="buffer"></div>
+    <Badge variant="secondary">{this.props.Workshop.short?"45 Min.":"90 Min."}</Badge>
+    </div>
     <FontAwesomeIcon icon={(this.state.collapsed)?faAngleLeft:faAngleDown} size="lg"></FontAwesomeIcon>
     </div>
     </Accordion.Toggle>
