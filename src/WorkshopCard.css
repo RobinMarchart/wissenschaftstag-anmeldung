@@ -1,14 +1,31 @@
-.workshop-card-body{
+.workshop-card-body {
     margin: 2pt;
 }
-.workshop-card{
+
+.workshop-card {
     margin: 10pt 0;
 }
-.workshop-card-accordion-header{
+
+.workshop-card-accordion-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.workshop-card-accordion-header>h4{
+
+.workshop-card-accordion-header>h4 {
     margin: 0;
+}
+
+@media (min-width:576px) {
+    .workshop-image {
+        width: 128px;
+        height: 128px;
+    }
+}
+
+@media (max-width:576px) {
+    .workshop-image {
+        width: 64px;
+        height: 64px;
+    }
 }

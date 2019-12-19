@@ -2,10 +2,10 @@
     "title":"Umfrage",
     "authors":["Hanna Hoogen", "Robin Marchart"],
     "image":{
-        "src":"Survey/Ente.jpg",
+        "src":"Ente.jpg",
         "alt":"🦆"
     },
     "short":false,
     "maxParticipants":20,
-    "description":"Survey/Description.md"
+    "description":"Description.md"
 }

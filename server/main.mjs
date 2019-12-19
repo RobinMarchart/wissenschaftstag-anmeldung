@@ -19,9 +19,10 @@ var basePath=args[1];
 var outPath=args[2];
 
 tmp.setGracefulCleanup();
-var tmpfile=tmp.fileSync()
 
+let tmpfoalder=tmp.dirSync();
 
+let count=0;
 
 async function buildStaticFiles(){
     console.log("building archive")
@@ -40,10 +41,11 @@ async function buildStaticFiles(){
     }));
     let hash=crypto.createHash("sha256")
     await new Promise((resolve,reject)=>zip.generateNodeStream({compression:"DEFLATE",compressionOptions:{level:9},streamFiles:true})
-    .pipe(hash).pipe(fs.createWriteStream(tmpfile.name))
+    .pipe(fs.createWriteStream(path.join(tmpfoalder.name,count.toString())))
     .on("finish",resolve).on("error",reject));
     let name=hash.digest('hex').slice(0,11)+".zip";
-    return[JSON,name,watch]
+    count++;
+    return[JSON,name,tmpfoalder.name,(count-1).toString(),watch]
 }
 
 function handleFileChange(staticFiles,watched){

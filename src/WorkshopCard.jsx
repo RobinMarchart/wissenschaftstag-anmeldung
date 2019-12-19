@@ -8,7 +8,7 @@ import './WorkshopCard.css'
 function WorkshopBody(props){
     return <Card.Body>
     <Media>
-    <img width={128} height={128} className="mr-3" src={URL.createObjectURL(props.Image.src)} alt={props.Image.alt}/>
+    <img className="mr-3 workshop-image" src={props.Image.src} alt={props.Image.alt}/>
     <Media.Body>
         <div className="workshop-card-body">
         <ReactMarkdown escapeHtml={false} source={props.Description}></ReactMarkdown>

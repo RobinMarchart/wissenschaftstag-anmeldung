@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css?family=Fira+Sans&display=swap');
+@import "~fira/fira.css";
 
 .app{
   margin: 25pt 0;
@@ -17,4 +17,21 @@
 
 h1,h2,h3,h4,h5,h6{
   font-family: 'Fira Sans', sans-serif;
+}
+
+.loading-container{
+  margin: 170px 0;
+}
+.loading{
+  display: flex;
+  font-size: 5em;
+  font-weight: 650;
+  font-family: 'Fira Sans', sans-serif;
+  color: rgba(0, 0, 0, 0.404);
+  align-content: center;
+  justify-content: center;
+}
+
+.error-container{
+  margin: 30px 0;
 }

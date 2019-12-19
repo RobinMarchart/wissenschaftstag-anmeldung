@@ -4,11 +4,10 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import WorkshopsList from './WorkshopsList';
 
 if (window.baseUrl===undefined)window.baseUrl="http://localhost:4000/"
 
-ReactDOM.render(<App Promise={WorkshopsList}/>, document.getElementById('root'));
+ReactDOM.render(<App/>, document.getElementById('root'));
 serviceWorker.unregister();
 
 // If you want your app to work offline and load faster, you can change
