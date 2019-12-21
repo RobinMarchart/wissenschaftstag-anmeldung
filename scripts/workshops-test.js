@@ -1,3 +1,3 @@
-require("./workshops")().catch(function(e){
+require("./workshops")(true).catch(function(e){
     console.error(e);
 })

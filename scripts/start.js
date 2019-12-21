@@ -61,9 +61,13 @@ if (process.env.HOST) {
   console.log();
 }
 
+async function create_zip(){
+  return await require("./workshops")(true);
+}
+
 // We require that you explicitly set browsers and do not fall back to
 // browserslist defaults.
-const create_zip=require("./workshops")
+
 const { checkBrowsers } = require('react-dev-utils/browsersHelper');
 checkBrowsers(paths.appPath, isInteractive).then(create_zip)
   .then(() => {

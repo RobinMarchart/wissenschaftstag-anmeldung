@@ -48,11 +48,8 @@ const config = configFactory('production');
 
 // We require that you explicitly set browsers and do not fall back to
 // browserslist defaults.
-async function create_zip(){
-  await require("./workshops")(true);
-}
 const { checkBrowsers } = require('react-dev-utils/browsersHelper');
-checkBrowsers(paths.appPath, isInteractive).then(create_zip)
+checkBrowsers(paths.appPath, isInteractive).then(require("./workshops"))
   .then(() => {
     // First, read the current file sizes in build directory.
     // This lets us display how much they changed later.
@@ -107,6 +104,7 @@ checkBrowsers(paths.appPath, isInteractive).then(create_zip)
         buildFolder,
         useYarn
       );
+      process.exit(0);
     },
     err => {
       const tscCompileOnError = process.env.TSC_COMPILE_ON_ERROR === 'true';
