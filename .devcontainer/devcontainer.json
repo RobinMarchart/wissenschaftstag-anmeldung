@@ -23,7 +23,26 @@
 
 	// Add the IDs of extensions you want installed when the container is created in the array below.
 	"extensions": [
-		"dbaeumer.vscode-eslint"
+		"dbaeumer.vscode-eslint",
+		"ritwickdey.liveserver",
+		"piotrpalarz.vscode-gitignore-generator",
+		"streetsidesoftware.code-spell-checker",
+		"pranaygp.vscode-css-peek",
+		"streetsidesoftware.code-spell-checker-german",
+		"donjayamanne.githistory",
+		"me-dutour-mathieu.vscode-github-actions",
+		"ms-vscode.github-issues-prs",
+		"github.vscode-pull-request-github",
+		"eamodio.gitlens",
+		"ms-vsliveshare.vsliveshare",
+		"bierner.markdown-checkbox",
+		"bierner.markdown-emoji",
+		"davidanson.vscode-markdownlint",
+		"christian-kohler.npm-intellisense",
+		"christian-kohler.path-intellisense",
+		"cssho.vscode-svgviewer",
+		"spmeesseman.vscode-taskexplorer",
+		"visualstudioexptteam.vscodeintellicode"
 	],
 	"appPort": [
 		"3000:3000",
