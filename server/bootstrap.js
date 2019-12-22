@@ -1,3 +1,3 @@
-const load=require("@std/esm")(module)
+const load=require("esm")(module)
 
 load("./main.mjs");

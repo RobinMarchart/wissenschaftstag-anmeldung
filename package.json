@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "homepage": ".",
   "dependencies": {
-    "@std/esm": "^0.26.0",
+    "esm": "^3.2.25",
     "express": "^4.17.1",
     "tmp": "^0.1.0"
   },
@@ -55,6 +55,7 @@
     "jest-resolve": "24.9.0",
     "jest-watch-typeahead": "0.4.2",
     "mini-css-extract-plugin": "0.8.0",
+    "openpgp": "^4.7.2",
     "optimize-css-assets-webpack-plugin": "5.0.3",
     "pnp-webpack-plugin": "1.5.0",
     "postcss-flexbugs-fixes": "4.1.0",
