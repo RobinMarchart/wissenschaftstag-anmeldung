@@ -4,7 +4,6 @@ import { WorkshopCard } from "./WorkshopCard";
 import { getRegistration, setRegistration } from "./LocalWorkshopRegistrations";
 import Finished from "./Finished"
 import "./WorkshopForm.css"
-import Remote from "./remote";
 
 export default class WorkshopForm extends React.Component {
 
@@ -15,7 +14,6 @@ export default class WorkshopForm extends React.Component {
             this.state.chosen = this.state.workshop[3];
             this.state.chosen2 = this.state.workshop[4];
         }
-        this.remote=new Remote(this.props.Workshops);
         this.form = {};
         this.changed = false;
         //display warning as user leaves
@@ -40,7 +38,7 @@ export default class WorkshopForm extends React.Component {
         console.debug(registration);
         setRegistration(registration);
         this.setState({ workshop: registration, send: null });
-        this.remote.send(registration).then(this.handleSuccessfulSubmit.bind(this),this.handleUnsuccsessfulSubmit.bind(this));
+        this.props.Remote.send(registration).then(this.handleSuccessfulSubmit.bind(this),this.handleUnsuccsessfulSubmit.bind(this));
     }
 
     handleSuccessfulSubmit(x){

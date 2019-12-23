@@ -6,5 +6,6 @@
 		"Survey/survey copy 2.json"
 	],
 	"key":"key.asc",
-	"url":"http://localhost:4000"
+	"url":"http://localhost:4000",
+	"classes":["extern", "10a", "10b", "10c", "10d", "10e"]
 }

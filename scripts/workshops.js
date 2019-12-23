@@ -65,7 +65,7 @@ async function run(url,watch){
         await picture_await;
     }(x1,picture)));
     let key_str=await key;
-    await fs.promises.writeFile(path.join("src","workshops.json"),JSON.stringify({workshops:workshops,key:key_str,url:url?url:original.url}));
+    await fs.promises.writeFile(path.join("src","workshops.json"),JSON.stringify({workshops:workshops,key:key_str,url:url?url:original.url,classes:original.classes}));
     running=false
     console.info("Finished processing workshops");
     if(run_again)rebuild();

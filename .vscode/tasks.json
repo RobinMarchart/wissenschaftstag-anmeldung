@@ -10,7 +10,10 @@
                 "kind": "test",
                 "isDefault": true
             },
-            "command":["yarn","start"]
+            "command": [
+                "yarn",
+                "start"
+            ]
         },
         {
             "label": "build production build",
@@ -19,7 +22,10 @@
                 "kind": "build",
                 "isDefault": true
             },
-            "command":["yarn","build"]
+            "command": [
+                "yarn",
+                "build"
+            ]
         }
     ]
 }

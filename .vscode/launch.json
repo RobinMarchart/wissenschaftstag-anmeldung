@@ -10,13 +10,17 @@
             "name": "Launch workshops-test",
             "program": "${workspaceFolder}/scripts/workshops-test.js"
         },
-    {
-        "type": "node",
-        "request": "launch",
-        "name": "Launch Server",
-        "program": "${workspaceFolder}/server/bootstrap.js",
-        "args": ["4000","workshops","out"]
-    },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Server",
+            "program": "${workspaceFolder}/server/bootstrap.js",
+            "args": [
+                "4000",
+                "workshops",
+                "out"
+            ]
+        },
         {
             "type": "firefox",
             "request": "launch",
@@ -34,10 +38,8 @@
             "url": "http://localhost:3000/",
             "webRoot": "${workspaceFolder}/public",
             "linux": {
-                "runtimeExecutable":"/usr/bin/chromium"
+                "runtimeExecutable": "/usr/bin/chromium"
             }
         }
-        
-        
     ]
 }
