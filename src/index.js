@@ -5,8 +5,6 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-if (window.baseUrl===undefined)window.baseUrl="http://localhost:4000/"
-
 ReactDOM.render(<App/>, document.getElementById('root'));
 serviceWorker.unregister();
 
