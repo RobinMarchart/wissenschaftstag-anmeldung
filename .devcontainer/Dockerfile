@@ -42,7 +42,7 @@ RUN apt-get update \
     && if [ "$USER_GID" != "1000" ]; then groupmod node --gid $USER_GID; fi \
     && if [ "$USER_UID" != "1000" ]; then usermod --uid $USER_UID node; fi \
     # [Optional] Add add sudo support for non-root user
-    && apt-get install -y sudo \
+    && apt-get install -y sudo htop\
     && echo node ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/node \
     && chmod 0440 /etc/sudoers.d/node \
     #

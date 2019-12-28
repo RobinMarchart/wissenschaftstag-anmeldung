@@ -2,8 +2,9 @@ import React from "react";
 import { Form, Col, Button } from "react-bootstrap";
 import { WorkshopCard } from "./WorkshopCard";
 import { getRegistration, setRegistration } from "./LocalWorkshopRegistrations";
-import Finished from "./Finished"
-import "./WorkshopForm.css"
+import FormSelect from "./FormSelect";
+import Finished from "./Finished";
+import "./WorkshopForm.css";
 
 export default class WorkshopForm extends React.Component {
 
@@ -38,16 +39,16 @@ export default class WorkshopForm extends React.Component {
         console.debug(registration);
         setRegistration(registration);
         this.setState({ workshop: registration, send: null });
-        this.props.Remote.send(registration).then(this.handleSuccessfulSubmit.bind(this),this.handleUnsuccsessfulSubmit.bind(this));
+        this.props.Remote.send(registration).then(this.handleSuccessfulSubmit.bind(this), this.handleUnsuccsessfulSubmit.bind(this));
     }
 
-    handleSuccessfulSubmit(x){
-        this.setState({send:true});
+    handleSuccessfulSubmit(x) {
+        this.setState({ send: true });
     }
 
-    handleUnsuccsessfulSubmit(e){
+    handleUnsuccsessfulSubmit(e) {
         console.error(e);
-        this.setState({send:false});
+        this.setState({ send: false });
     }
 
     handleWorkshopChange(x) {
@@ -69,13 +70,16 @@ export default class WorkshopForm extends React.Component {
     }
 
     renderSecondWorkshop() {
-        if (this.state.short&&this.state.chosen) {
-            let workshops = this.props.Workshops.filter(x=>x.short&&(x.title!==this.state.chosen));
+        if (this.state.short && this.state.chosen) {
+            let workshops = this.props.Workshops.filter(x => x.short && (x.title !== this.state.chosen));
             return <Form.Group controlId="formWorkshop2">
                 <Form.Label>Workshop</Form.Label>
-                <Form.Control as="select" defaultValue={(this.state.workshop) ? this.state.workshop[4] : null} onChange={this.handleSecondWorkshopChange.bind(this)} ref={ref => this.form.workshop2 = ref}>
-                    {workshops.map((x, y) => <option key={y.toString()}>{x.title}</option>)}
-                </Form.Control>
+                <FormSelect
+                    defaultValue={(this.state.workshop) ? this.state.workshop[4] : null}
+                    onChange={this.handleSecondWorkshopChange.bind(this)}
+                    Ref={ref => this.form.workshop2 = ref}
+                    Options={workshops.map(x=>x.title)}
+                />
             </Form.Group>;
         }
     }
@@ -109,18 +113,23 @@ export default class WorkshopForm extends React.Component {
                 </Form.Group>
 
                 <Form.Group controlId="formClass" as={Col} md="4">
-                    <Form.Label>Classe</Form.Label>
-                    <Form.Control as="select" onChange={this.handleStateChange.bind(this)} defaultValue={(this.state.workshop) ? this.state.workshop[2] : null} ref={ref => this.form.class = ref}>
-                        {this.props.Classes.map((x, y) => <option key={y.toString()}>{x}</option>)}
-                    </Form.Control>
+                    <Form.Label>Klasse</Form.Label>
+                    <FormSelect
+                        onChange={this.handleStateChange.bind(this)}
+                        defaultValue={(this.state.workshop) ? this.state.workshop[2] : null}
+                        Ref={ref => this.form.class = ref}
+                        Options={this.props.Classes}
+                    />
                 </Form.Group>
             </Form.Row>
 
             <Form.Group controlId="formWorkshop">
                 <Form.Label>Workshop</Form.Label>
-                <Form.Control as="select" defaultValue={(this.state.workshop) ? this.state.workshop[3] : null} onChange={this.handleWorkshopChange.bind(this)} ref={ref => this.form.workshop = ref}>
-                    {this.props.Workshops.map((x, y) => <option key={y.toString()}>{x.title}</option>)}
-                </Form.Control>
+                <FormSelect
+                    defaultValue={(this.state.workshop) ? this.state.workshop[3] : null}
+                    onChange={this.handleWorkshopChange.bind(this)}
+                    Ref={ref => this.form.workshop = ref}
+                    Options={this.props.Workshops.map(x=>x.title)} />
             </Form.Group>
 
             {this.renderChosenWorkshop()}

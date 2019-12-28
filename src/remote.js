@@ -9,7 +9,7 @@ function log_too(data) {
 }
 
 async function sendRegistration(remote_config, reg_data) {
-    return await axios.put(remote_config.url + "registration", log_too((await encrypt({
+    return await axios.put(remote_config.url + "register", log_too((await encrypt({
         message: message.fromText(JSON.stringify({
             data: reg_data,
             timestamp: Math.floor(Date.now() / 1000)
