@@ -9,14 +9,14 @@ function log_too(data) {
 }
 
 async function sendRegistration(remote_config, reg_data) {
-    return await axios.put(remote_config.url + "register", log_too((await encrypt({
-        message: message.fromText(JSON.stringify({
-            data: reg_data,
-            timestamp: Math.floor(Date.now() / 1000)
-        })),
+    console.log(remote_config.url + "register");
+    return await axios.put(remote_config.url + "register", {data:log_too((await encrypt({
+        message: message.fromText(JSON.stringify(reg_data)),
         publicKeys: (await remote_config.key).keys,
         armor: true
-    })).data));
+    })).data),
+    timestamp: Math.floor(Date.now() / 1000)
+});
 }
 
 class RemoteConnection {

@@ -39,15 +39,16 @@ export default class WorkshopForm extends React.Component {
         console.debug(registration);
         setRegistration(registration);
         this.setState({ workshop: registration, send: null });
-        this.props.Remote.send(registration).then(this.handleSuccessfulSubmit.bind(this), this.handleUnsuccsessfulSubmit.bind(this));
+        this.props.Remote.send(registration).then(this.handleSuccessfulSubmit.bind(this), this.handleUnsuccessfulSubmit.bind(this));
     }
 
     handleSuccessfulSubmit(x) {
+        console.log(x.message)
         this.setState({ send: true });
     }
 
-    handleUnsuccsessfulSubmit(e) {
-        console.error(e);
+    handleUnsuccessfulSubmit(e) {
+        console.error(e.message);
         this.setState({ send: false });
     }
 
