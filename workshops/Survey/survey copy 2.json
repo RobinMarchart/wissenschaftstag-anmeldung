@@ -7,5 +7,6 @@
     },
     "short":true,
     "maxParticipants":20,
-    "description":"Description.md"
+    "description":"Description.md",
+    "key":"ku2"
 }

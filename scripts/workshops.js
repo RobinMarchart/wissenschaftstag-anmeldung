@@ -1,6 +1,8 @@
 const fs=require("fs");
 const path=require("path");
 
+const crypto = require("crypto")
+
 const base="workshops"
 
 const out=path.join("public","workshops")
@@ -39,6 +41,16 @@ function addListener(name){
     watchers.push(fs.watch(name,requestRebuild));
 }
 
+var duplicates=(()=>{
+let count = names =>
+  names.reduce((a, b) => ({ ...a,
+    [b]: (a[b] || 0) + 1
+  }), {})
+let duplicates = dict =>
+  Object.keys(dict).filter((a) => dict[a] > 1)
+  return x=>duplicates(count(x));
+})();
+
 async function run(url,watch){
     running=true;
     let out_ready=clearFile();
@@ -61,10 +73,21 @@ async function run(url,watch){
         if(watch)addListener(path.join(base,entry_base,path.join(...entry.image.src.split("/"))));
         entry.image.src="workshops/"+picturename;
         entry.description=await descr;
+        entry.key=crypto.createHash("sha256").update(entry.key).digest("hex");
         workshops.push(entry);
         await picture_await;
     }(x1,picture)));
     let key_str=await key;
+    let dup_title=duplicates(workshops.map(x=>x.title));
+    if(dup_title.length>0){
+        console.error("non unique titles found: "+dup_title.join(" "))
+        process.exit(1);
+    }
+    let dup_key=duplicates(workshops.map(x=>x.key));
+    if(dup_key.length>0){
+        console.error("non unique keys found: "+dup_title.join(" "))
+        process.exit(1);
+    }
     await fs.promises.writeFile(path.join("src","workshops.json"),JSON.stringify({workshops:workshops,key:key_str,url:url?url:original.url,classes:original.classes}));
     running=false
     console.info("Finished processing workshops");
