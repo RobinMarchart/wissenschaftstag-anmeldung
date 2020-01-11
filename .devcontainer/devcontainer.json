@@ -42,5 +42,6 @@
 	"appPort": [
 		"3000:3000",
 		"4000:4000"
-	]
+	],
+	"mounts": ["source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"]
 }

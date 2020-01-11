@@ -5,14 +5,14 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
-    "esm": "^3.2.25",
     "express": "^4.17.1"
   },
   "files": [
-    "server"
+    "server-out",
+    "build"
   ],
   "license": "MIT",
-  "main": "server/main.mjs",
+  "main": "server-out/main.js",
   "bin": "worshop-anmeldung-server",
   "devDependencies": {
     "@babel/core": "7.7.4",
@@ -23,6 +23,9 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "@types/cors": "^2.8.6",
+    "@types/express": "^4.17.2",
+    "@types/node": "^13.1.6",
     "@typescript-eslint/eslint-plugin": "^2.8.0",
     "@typescript-eslint/parser": "^2.8.0",
     "axios": "^0.19.0",
@@ -77,19 +80,25 @@
     "style-loader": "1.0.0",
     "terser-webpack-plugin": "2.2.1",
     "ts-pnp": "1.1.5",
+    "typescript": "^3.7.4",
     "url-loader": "2.3.0",
     "webpack": "4.41.2",
     "webpack-dev-server": "3.9.0",
     "webpack-manifest-plugin": "2.2.0",
     "workbox-webpack-plugin": "4.3.1",
-    "worker-loader": "^2.0.0"
+    "worker-loader": "^2.0.0",
+    "yarn-or-npm": "^3.0.1"
   },
   "scripts": {
     "start-client": "node scripts/start.js",
-    "build": "node scripts/build.js",
+    "build-client": "node scripts/build.js",
     "test": "node scripts/test.js",
     "start-server": "node server/bootstrap.js 4000 workshops out",
-    "start": "concurrently -k \"yarn start-client\" \"yarn start-server\""
+    "build-server": "tsc",
+    "start": "concurrently -k \"yon start-client\" \"yon start-server\"",
+    "build":"yon build-server ; yon build-client",
+    "prepare": "yon build",
+    "watch": "tsc -w"
   },
   "eslintConfig": {
     "extends": "react-app"
