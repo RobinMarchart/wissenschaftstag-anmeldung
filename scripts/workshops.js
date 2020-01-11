@@ -51,7 +51,7 @@ let duplicates = dict =>
   return x=>duplicates(count(x));
 })();
 
-async function run(url,watch){
+async function run(url,watch,passthrough){
     running=true;
     let out_ready=clearFile();
     let original=JSON.parse(await fs.promises.readFile(path.join(base,"index.json")));
@@ -92,6 +92,7 @@ async function run(url,watch){
     running=false
     console.info("Finished processing workshops");
     if(run_again)rebuild();
+    return passthrough;
 }
 
 module.exports=run;

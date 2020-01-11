@@ -37,7 +37,9 @@
 		"christian-kohler.path-intellisense",
 		"cssho.vscode-svgviewer",
 		"spmeesseman.vscode-taskexplorer",
-		"visualstudioexptteam.vscodeintellicode"
+		"visualstudioexptteam.vscodeintellicode",
+		"ms-azuretools.vscode-docker"
+
 	],
 	"appPort": [
 		"3000:3000",

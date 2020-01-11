@@ -46,10 +46,14 @@ if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
 // Generate configuration
 const config = configFactory('production');
 
+async function create_zip(pass) {
+	return await require("./workshops")(null, false,pass);
+}
+
 // We require that you explicitly set browsers and do not fall back to
 // browserslist defaults.
 const { checkBrowsers } = require('react-dev-utils/browsersHelper');
-checkBrowsers(paths.appPath, isInteractive).then(require("./workshops"))
+checkBrowsers(paths.appPath, isInteractive).then(create_zip)
 	.then(() => {
 		// First, read the current file sizes in build directory.
 		// This lets us display how much they changed later.
