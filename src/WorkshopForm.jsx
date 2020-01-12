@@ -83,7 +83,7 @@ export default class WorkshopForm extends React.Component {
                     Options={workshops.filter(x=>{
                         let remote=this.props.remoteWorkshops.find(x1=>x1[0]===x.key);
                         if(remote){
-                            let key=remote[0];
+                            //let key=remote[0];
                             remote=remote[1];
                             return remote.used.second<remote.max;
                         }else return true;
