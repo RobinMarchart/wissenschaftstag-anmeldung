@@ -2,9 +2,6 @@ import React from "react";
 import {Toast} from "react-bootstrap"
 
 export default class Notification extends React.Component{
-    constructor(props){
-        super(props)
-    }
     componentDidMount() {
         if (this.props.heightCallback)this.props.heightCallback(this.div.clientHeight)
     }

@@ -38,8 +38,9 @@ export default class WorkshopForm extends React.Component {
         this.form.workshop.value, (this.state.short) ? this.form.workshop2.value : ""];
         console.debug(registration);
         setRegistration(registration);
+        let old_reg=this.state.workshop;
         this.setState({ workshop: registration, send: null });
-        this.props.Remote.send(registration).then(this.handleSuccessfulSubmit.bind(this), this.handleUnsuccessfulSubmit.bind(this));
+        this.props.Remote.send(registration,old_reg).then(this.handleSuccessfulSubmit.bind(this), this.handleUnsuccessfulSubmit.bind(this));
     }
 
     handleSuccessfulSubmit(x) {
@@ -79,7 +80,14 @@ export default class WorkshopForm extends React.Component {
                     defaultValue={(this.state.workshop) ? this.state.workshop[4] : null}
                     onChange={this.handleSecondWorkshopChange.bind(this)}
                     Ref={ref => this.form.workshop2 = ref}
-                    Options={workshops.map(x=>x.title)}
+                    Options={workshops.filter(x=>{
+                        let remote=this.props.remoteWorkshops.find(x1=>x1[0]===x.key);
+                        if(remote){
+                            let key=remote[0];
+                            remote=remote[1];
+                            return remote.used.second<remote.max;
+                        }else return true;
+                    }).map(x=>x.title)}
                 />
             </Form.Group>;
         }
@@ -130,7 +138,14 @@ export default class WorkshopForm extends React.Component {
                     defaultValue={(this.state.workshop) ? this.state.workshop[3] : null}
                     onChange={this.handleWorkshopChange.bind(this)}
                     Ref={ref => this.form.workshop = ref}
-                    Options={this.props.Workshops.map(x=>x.title)} />
+                    Options={this.props.Workshops.filter(x=>{
+                        let remote=this.props.remoteWorkshops.find(x1=>x1[0]===x.key);
+                        if(remote){
+                            remote=remote[1];
+                            if(remote.short)return remote.used.first<remote.max;
+                            else return remote.used<remote.max;
+                        }else return true;
+                    }).map(x=>x.title)} />
             </Form.Group>
 
             {this.renderChosenWorkshop()}
