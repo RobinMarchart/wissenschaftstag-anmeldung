@@ -96,7 +96,7 @@
     "start-server": "node server/bootstrap.js 4000 workshops out",
     "build-server": "tsc",
     "start": "concurrently -k \"yon start-client\" \"yon start-server\"",
-    "build":"yon build-server ; yon build-client",
+    "build":"yon build-server && yon build-client",
     "prepare": "yon build",
     "watch": "tsc -w"
   },
