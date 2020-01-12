@@ -15,7 +15,7 @@ async function clearFile(){
     }catch{
 
     }
-    await fs.promises.mkdir(out);
+    await fs.promises.mkdir(out).catch(console.error);
 }
 
 var running=false;
