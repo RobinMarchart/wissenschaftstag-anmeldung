@@ -5,9 +5,15 @@ import WorkshopForm from './WorkshopForm';
 import './App.css';
 import index from "./workshops.json"
 import Remote from "./remote";
+import NotificationBar from "./NotificationBar"
 
-function App(props) {
-	return (
+class App extends React.Component{
+	constructor(props){
+		super(props);
+		this.state={notificationSystem:null};
+	}
+	render(){
+		return (
 		<div className="app">
 			<Container>
 				<Accordion>
@@ -17,8 +23,11 @@ function App(props) {
 				<WorkshopForm Classes={index.classes} Workshops={index.workshops} Remote={new Remote(index)}>
 				</WorkshopForm>
 			</Container>
+			<NotificationBar ref={x=>{if(!this.state.notificationSystem)this.setState({notificationSystem:x});}}></NotificationBar>
 		</div>
 	);
+	}
 }
+
 
 export default App;

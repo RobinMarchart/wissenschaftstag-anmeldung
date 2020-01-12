@@ -93,7 +93,7 @@
     "start-client": "node scripts/start.js",
     "build-client": "node scripts/build.js",
     "test": "node scripts/test.js",
-    "start-server": "node server/bootstrap.js 4000 workshops out",
+    "start-server": "yon build-server && node server-out/main.js 4000 workshops out",
     "build-server": "tsc",
     "start": "concurrently -k \"yon start-client\" \"yon start-server\"",
     "build":"yon build-server && yon build-client",
