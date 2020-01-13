@@ -1,8 +1,6 @@
 {
 	"workshops":[
 		"Survey/survey.json",
-		"Survey/survey copy.json",
-		"Survey/survey copy 2.json",
 		"Distanzermittlung/distanz.json"
 	],
 	"key":"key.asc",
