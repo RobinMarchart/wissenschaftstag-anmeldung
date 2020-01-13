@@ -1,0 +1,13 @@
+.notification-test{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 250px;
+    display: none;
+}
+.notification-container{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 250px;
+}

@@ -6,6 +6,8 @@ import crypto from "crypto";
 import bodyParser from "body-parser";
 import * as config from "./config";
 
+import {NextFunction,Response} from "express";
+
 var args = process.argv.slice(2)
 
 function wrongParams() {
@@ -22,20 +24,22 @@ var outPath = args[2];
 type request = { data: any | undefined, add: any | undefined, remove: any | undefined };
 type wellFormedRequest = { data: string, add: string | { first: string, second: string }, remove: string | { first: string, second: string } | undefined }
 
+type response = { status: number, message: string };
+
 // eslint-disable-next-line @typescript-eslint/no-namespace
 namespace requestValidation {
 
     function validateShortWorkshop(workshop: { first: any | undefined, second: any | undefined }, config: config.Config): boolean {
         return typeof workshop.first === "string" &&
             config.current_state.has(workshop.first) &&
-            (config.current_state.get(workshop.first)as config.Workshop).short &&
+            (config.current_state.get(workshop.first) as config.Workshop).short &&
             typeof workshop.second === "string" &&
-            config.current_state.has(workshop.second)&&
-            (config.current_state.get(workshop.second)as config.Workshop).short
+            config.current_state.has(workshop.second) &&
+            (config.current_state.get(workshop.second) as config.Workshop).short
     }
 
     function validateWorkshop(workshop: any | undefined, config: config.Config): boolean {
-        return typeof workshop === "string" ? (config.current_state.has(workshop as string)&&!(config.current_state.get(workshop as string)as config.Workshop).short) :
+        return typeof workshop === "string" ? (config.current_state.has(workshop as string) && !(config.current_state.get(workshop as string) as config.Workshop).short) :
             (typeof workshop === "object" && validateShortWorkshop(workshop as { first: any, second: any }, config))
     }
 
@@ -48,6 +52,18 @@ namespace requestValidation {
     }
 }
 
+function checkSmallWorkshopsRegistration(first: string, second: string, map: Map<string, config.Workshop>): boolean {
+    return true;
+}
+
+function fullfillRequest(error:boolean,response:response,res:Response,next:NextFunction):void{
+    if(!error){
+        response={status:200,message:"Erfolgreich angemeldet"}
+    }
+    res.status(response.status).json(response);
+    next();
+}
+
 async function run() {
     await fs.promises.access(outPath).catch(() => fs.promises.mkdir(outPath, { recursive: true }));
     await fs.promises.access(outPath, fs.constants.F_OK | fs.constants.W_OK)
@@ -57,20 +73,86 @@ async function run() {
     var app = express();
     app.options("/register", cors())
     app.post("/register", cors(), bodyParser.json(), function (req, res, next) {
+
         let r: request | undefined = req.body;
+        let response: response = { status: 500, message: "Nicht bearbeitet" };
+        let error: boolean = false;
         if (requestValidation.validate(r, conf)) {
             let hash = crypto.createHash("sha256").update(r.data).digest("hex");
-            if(r.remove){
-                if(typeof r.remove==="string"){
-                    let workshop=conf.current_state.get(r.remove);
-                }else{
+            if (r.remove) {
+                if (typeof r.remove === "string") {
+                    let workshop = conf.current_state.get(r.remove) as config.LongWorkshop;
+                    if (workshop.used < 1) {
+                        response = { status: 500, message: "Fehler beim abmelden von " + workshop.title }
+                        error = true;
+                    } else {
+                        workshop.used--;
+                    }
+
+                } else {
+                    let workshop1 = conf.current_state.get(r.remove.first) as config.LongWorkshop;
+                    if (workshop1.used < 1) {
+                        response = { status: 500, message: "Fehler beim abmelden von " + workshop1.title }
+                        error = true;
+                    } else {
+                        workshop1.used--;
+                        let workshop2 = conf.current_state.get(r.remove.second) as config.LongWorkshop;
+                        if (workshop2.used < 1) {
+                            response = { status: 500, message: "Fehler beim abmelden von " + workshop2.title }
+                            error = true;
+                        } else {
+                            workshop2.used--;
+                        }
+                    }
+                }
+            }
+            if (!error) {
+                if (typeof r.add === "string") {
+                    let workshop = conf.current_state.get(r.add) as config.LongWorkshop;
+                    if (workshop.used >= workshop.max) {
+                        response = { status: 500, message: "Nicht genug freie Plätze in " + workshop.title }
+                        error = true;
+                    } else {
+                        workshop.used++;
+                    }
+
+                } else {
+                    if (checkSmallWorkshopsRegistration(r.add.first, r.add.second, conf.current_state)) {
+                        let workshop1 = conf.current_state.get(r.add.first) as config.LongWorkshop;
+                        if (workshop1.used >= workshop1.max) {
+                            response = { status: 418, message: "Nicht genug freie Plätze in " + workshop1.title };
+                            error = true;
+                        } else {
+                            workshop1.used++;
+                            let workshop2 = conf.current_state.get(r.add.second) as config.LongWorkshop;
+                            if (workshop2.used >= workshop2.max) {
+                                response = { status: 418, message: "Nicht genug freie Plätze in " + workshop2.title };
+                                error = true;
+                            } else {
+                                workshop2.used++;
+                            }
+                        }
+                    } else {
+                        response = { status: 418, message: "Diese Workshop Kombination ist nicht mehr verfügbar" };
+                        error = true;
+                    }
 
                 }
             }
+            if(!error){
+                //safe request
+                let savedRequest:{timestamp:number}&wellFormedRequest=r as {timestamp:number}&wellFormedRequest;
+                savedRequest.timestamp=Date.now();
+                fs.promises.writeFile(path.join(outPath,hash+".json"),JSON.stringify(savedRequest),{encoding:"utf8"}).catch(e=>{
+                    response={status:500,message:"IO Fehler"};
+                    error=true
+                }).finally(()=>fullfillRequest(error,response,res,next));
+            }
         } else {
-
+            response={status:400,message:"Bad Request"}
+            error=true;
         }
-
+        fullfillRequest(error,response,res,next);
 
     });
     app.options("/workshops", cors())

@@ -47,6 +47,17 @@ export class AccordionWorkshopCard extends React.Component{
     }
 
     render(){
+        let remote=this.props.remoteWorkshop.find(x=>x[0]===this.props.Workshop.key);
+        let used_max=[]
+        if(remote){
+            remote=remote[1];
+            if(remote.short){
+                used_max.push([remote.used.first,remote.max]);
+                used_max.push([remote.used.second,remote.max]);
+            }else{
+                used_max.push([remote.used,remote.max]);
+            }
+        }
         return <div className="workshop-card">
     <Card>
     <Accordion.Toggle as={Card.Header} eventKey={this.props.Key.toString()} onClick={()=>this.setState({collapsed:!this.state.collapsed})}>
@@ -58,7 +69,10 @@ export class AccordionWorkshopCard extends React.Component{
     <div className="buffer"></div>
     <Badge variant="secondary">{this.props.Workshop.short?"45 Min.":"90 Min."}</Badge>
     </div>
+    <div className="workshop-header-float-group">
+    {used_max.map((x,y)=><div key={y.toString()} className="workshop-header-float-group"><Badge variant={x[0]<x[1]?"secondary":"danger"}>{""+x[0]+"/"+x[1]}</Badge><div className="buffer"></div></div>)}
     <FontAwesomeIcon icon={(this.state.collapsed)?faAngleLeft:faAngleDown} size="lg"></FontAwesomeIcon>
+    </div>
     </div>
     </Accordion.Toggle>
     <Accordion.Collapse eventKey={this.props.Key.toString()}>

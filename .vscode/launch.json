@@ -14,7 +14,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Server",
-            "program": "${workspaceFolder}/server/bootstrap.js",
+            "program": "${workspaceFolder}/server-out/main.js",
             "args": [
                 "4000",
                 "workshops",

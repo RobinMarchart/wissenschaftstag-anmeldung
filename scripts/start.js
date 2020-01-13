@@ -61,8 +61,8 @@ if (process.env.HOST) {
 	console.log();
 }
 
-async function create_zip() {
-	return await require("./workshops")("http://localhost:4000", true);
+async function create_zip(pass) {
+	return await require("./workshops")("http://localhost:4000", true,pass);
 }
 
 // We require that you explicitly set browsers and do not fall back to
