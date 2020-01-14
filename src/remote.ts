@@ -9,8 +9,8 @@ function log_too(data) {
 }
 
 async function sendRegistration(remote_config, reg_data, old,not) {
-    console.log(remote_config.url + "register");
-    return await axios.put(remote_config.url + "register", {
+    console.log(remote_config.url + "/register");
+    return await axios.post(remote_config.url + "/register", {
         data: log_too((await encrypt({
             message: message.fromText(JSON.stringify(reg_data)),
             publicKeys: (await remote_config.key).keys,
@@ -22,7 +22,9 @@ async function sendRegistration(remote_config, reg_data, old,not) {
     }).then(x=>{
         not.submit("Anmelden erfolgreich",( x.data as {message:string}).message);
     },x=>{
-        not.submit("Fehler "+( x.data as {status:number}).status,( x.data as {message:string}).message)
+        console.error(x);
+
+        not.submit("Fehler "+( x.response.data as {status:number}).status,( x.response.data as {message:string}).message)
     });
 }
 
@@ -40,7 +42,7 @@ class RemoteConnection {
         return sendRegistration(this.remote, reg_data, old,this.not);
     }
     getHandle(){
-        return {send:this.send};
+        return {send:(x1,x2)=>this.send(x1,x2)};
     }
 
     setNot(not){
