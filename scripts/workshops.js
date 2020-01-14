@@ -12,8 +12,8 @@ async function clearFile(){
         await fs.promises.access(out);
         if ((await fs.promises.stat(out)).isDirectory())await fs.promises.rmdir(out,{recursive:true});
         else await fs.promises.unlink(out);
-    }catch{
-
+    }catch(e){
+        console.error(e);
     }
     await fs.promises.mkdir(out).catch(console.error);
 }
@@ -69,7 +69,7 @@ async function run(url,watch,passthrough){
         let picturename=picture[0].toString()+path.extname(entry.image.src)
         picture[0]=picture[0]+1;
         let picture_await=fs.promises.copyFile(path.join(base,entry_base,path.join(...entry.image.src.split("/")))
-            ,path.join(out,picturename));
+            ,path.join(out,picturename)).catch(console.error);
         if(watch)addListener(path.join(base,entry_base,path.join(...entry.image.src.split("/"))));
         entry.image.src="workshops/"+picturename;
         entry.description=await descr;

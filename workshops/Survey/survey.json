@@ -1,12 +1,11 @@
 {
-    "title":"Umfrage",
+    "title":"Auswertung einer kursinternen Umfrage",
     "authors":["Hanna Hoogen", "Robin Marchart"],
     "image":{
-        "src":"Ente.jpg",
-        "alt":"🦆"
+        "src":"13B.png",
+        "alt":"Ein TOLLES Diagramm, "
     },
     "short":false,
-    "maxParticipants":20,
     "description":"Description.md",
-    "key":"u1"
+    "key":"uiuiuiuiuiuiuiuiuiuiuiuiuiui"
 }

@@ -1,9 +1,1 @@
-
-##### Testing the login function 
-
-###### TODO
-
-+ test1
-+ test2
-
-lol
+Unser Workshop zeigt euch die Grundlagen einer statistischen Datenanalyse, wie sie z.B. in Geistes- und Sozialwissenschaftlicher Forschung verwendet wird. Dazu dürft ihr eine Umfrage zum Thema Lebenszufriedenheit beantworten und danach die gesammelten Daten von diesem Workshop eigenständig auswerten. Die Ergebnisse geben euch Einblicke in Faktoren, die eure eigene Lebenszufriedenheit tatsächlich beeinflussen. Die gewonnenen Erkenntnisse könnt ihr somit gleich in euer eigenes Leben mit einbeziehen. 

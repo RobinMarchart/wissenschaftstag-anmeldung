@@ -19,8 +19,7 @@ export default class NotificationBar extends React.Component{
             this.state.rendered.push(this.state.queue.shift());
         }
         return <div><div className="notification-container" ref={x=>this.not_con=x}>
-            {this.state.rendered.map((x,y)=><Notification key={y} Content={x} onClose={()=>this._remove(x)}></Notification>)}
-            Test
+            {this.state.rendered.map((x,y)=><Notification key={y} content={x} onClose={()=>this._remove(x)}></Notification>)}
         </div>
         <div className="notification-test">
         {this.state.test_size.map((x,y)=><Notification key={y} hidden={true} content={x} heightCallback={h=>this._queue(x,h)}></Notification>)}

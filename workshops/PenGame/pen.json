@@ -1,0 +1,12 @@
+{
+    "title":"PenGame - Effiziente Gestaltung einer Serienproduktion",
+    "authors":["Dominik Krepold", "Peter Mewe"],
+    "image":{
+        "src":"lol",
+        "alt":"Stifte und Stuff"
+    },
+    "short":false,
+    "maxParticipants":20,
+    "description":"descr.md",
+    "key":"DIETUMISTSEHREXZELLENT"
+}

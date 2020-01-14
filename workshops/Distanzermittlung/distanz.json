@@ -1,0 +1,12 @@
+{
+    "title":"Astronomische Distanzbestimmung mittels pulsationsveränderlichen Sternen",
+    "authors":["Elias Hanser", "Jeanette Plechinger"],
+    "image":{
+        "src":"heic1323a.jpg",
+        "alt":"🌌 Hubble image of variable star RS Puppis"
+    },
+    "short":false,
+    "maxParticipants":18,
+    "description":"description.md",
+    "key":"AstroDistanzLießtDasEigentlichWer?"
+}

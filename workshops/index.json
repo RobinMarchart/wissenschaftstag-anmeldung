@@ -1,8 +1,9 @@
 {
 	"workshops":[
 		"Survey/survey.json",
-		"Survey/survey copy.json",
-		"Survey/survey copy 2.json"
+		"Distanzermittlung/distanz.json",
+		"Blätter/blätter.json",
+		"PenGame/pen.json"
 	],
 	"key":"key.asc",
 	"url":"http://localhost:4000/",

@@ -23,7 +23,8 @@ class App extends React.Component{
 			this.setState({remoteWorkshops:x.data,availableShortWorkshops:checkShortWorkshop(x.data.filter(x=>x[1].short))})
 		}).catch((e)=>{
 			console.error(e);
-			this.state.notificationSystem.submit("Fehler: "+e.response.status,e.response.statusText);
+			if(e.response)this.state.notificationSystem.submit("Fehler: "+e.response.status,e.response.statusText);
+			else this.state.notificationSystem.submit("Netzwerkfehler","");
 		})
 	}
 

@@ -1,12 +1,14 @@
 import React from "react";
-import {Toast} from "react-bootstrap"
+import {Toast} from "react-bootstrap";
+
+import "./Notification.css";
 
 export default class Notification extends React.Component{
     componentDidMount() {
         if (this.props.heightCallback)this.props.heightCallback(this.div.clientHeight)
     }
     render(){
-        return <div style={this.props.hidden?{display:"none"}:{}} ref={div=>this.div=div}>
+        return <div className="notification" style={this.props.hidden?{display:"none"}:{}} ref={div=>this.div=div}>
             <Toast onClose={this.props.onClose}>
             <Toast.Header>
             <strong>{this.props.content.title}</strong>

@@ -1,0 +1,12 @@
+{
+    "title":"Chromatographie anhand von Blattfarbstoffen",
+    "authors":["Jakob Then", "Fabia Fuchslocher"],
+    "image":{
+        "src":"lol",
+        "alt":"Blätter und Stuff"
+    },
+    "short":true,
+    "maxParticipants":18,
+    "description":"descr.md",
+    "key":"ICHBRAUCHNOCHEINFUCKINGBILD"
+}
