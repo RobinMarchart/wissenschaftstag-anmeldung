@@ -8,6 +8,8 @@ import * as config from "./config";
 
 import {NextFunction,Response} from "express";
 
+import {checkWOrkshopDistribution} from "./checkShortWorkshops"
+
 var args = process.argv.slice(2)
 
 function wrongParams() {
@@ -53,7 +55,13 @@ namespace requestValidation {
 }
 
 function checkSmallWorkshopsRegistration(first: string, second: string, map: Map<string, config.Workshop>): boolean {
-    return true;
+    let firstB=Array.from(map.entries()).filter(x=>x[1].short).map(x=>{
+        return {key:x[0], curr:x[0]===first?(x[1].used as {first:number,second:number}).first+1:(x[1].used as {first:number,second:number}).first,max:x[1].max};
+    })
+    let secondB=Array.from(map.entries()).filter(x=>x[1].short).map(x=>{
+        return {key:x[0], curr:x[0]===second?(x[1].used as {first:number,second:number}).second+1:(x[1].used as {first:number,second:number}).second,max:x[1].max};
+    })
+    return checkWOrkshopDistribution(firstB,secondB);
 }
 
 function fullfillRequest(error:boolean,response:response,res:Response,next:NextFunction):void{

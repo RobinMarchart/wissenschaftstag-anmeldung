@@ -38,7 +38,12 @@ function rebuild(){
 var watchers=[];
 
 function addListener(name){
+    try{
+
     watchers.push(fs.watch(name,requestRebuild));
+    }catch(e){
+        console.error(e);
+    }
 }
 
 var duplicates=(()=>{

@@ -60,7 +60,7 @@ export class Config {
         await fs.promises.access(curr_path).then(read_current.bind(null, curr_path, this.current_state, workshops), () => workshops.forEach(workshop => {
             this.current_state.set(crypto.createHash("sha256").update(workshop.key).digest("hex"), {
                 short: workshop.short,
-                max: workshop.maxParticipants ? workshop.maxParticipants : -1,
+                max: workshop.maxParticipants ? workshop.maxParticipants : Infinity,
                 title: workshop.title,
                 used: workshop.short ? { first: 0, second: 0 } : 0
             });
@@ -84,7 +84,7 @@ async function read_current(path:string, map:Map<string,Workshop>, workshops:Fil
         let key = crypto.createHash("sha256").update(workshop.key).digest("hex");
         map.set(key, {
             short: workshop.short,
-            max: workshop.maxParticipants ? workshop.maxParticipants : -1,
+            max: workshop.maxParticipants ? workshop.maxParticipants : Infinity,
             title: workshop.title,
             used: curr.has(key) && (curr.get(key) !== undefined) && ((curr.get(key)as {used:any}).used !== undefined) ?
                 (workshop.short ?

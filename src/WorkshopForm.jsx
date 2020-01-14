@@ -143,7 +143,7 @@ export default class WorkshopForm extends React.Component {
                         let remote=this.props.remoteWorkshops.find(x1=>x1[0]===x.key);
                         if(remote){
                             remote=remote[1];
-                            if(remote.short)return remote.used.first<remote.max&&this.props.availableShortWorkshops.map(x1=>x1.first.key===x.key).reduce((x2,y2)=>x2||y2);
+                            if(remote.short)return remote.used.first<remote.max&&this.props.availableShortWorkshops.map(x1=>x1.first.key===x.key).reduce((x2,y2)=>x2||y2,false);
                             else return remote.used<remote.max;
                         }else return true;
                     }).map(x=>x.title)} />
