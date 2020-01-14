@@ -1,0 +1,12 @@
+{
+    "title":"Indigo - Färben mit dem Jeansfarbstoff",
+    "authors":["Nadine Wondra", "Emilia Delonge"],
+    "image":{
+        "src":"lol",
+        "alt":"Indigo und Stuff"
+    },
+    "short":false,
+    "maxParticipants":20,
+    "description":"descr.md",
+    "key":"DIETUMISTSEHREXZELLENT"
+}
