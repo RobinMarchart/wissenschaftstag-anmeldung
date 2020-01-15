@@ -15,6 +15,12 @@
 .workshop-card-accordion-header>h4 {
     margin: 0;
 }
+@media (min-width:1200px) {
+    .workshop-image {
+        width: 256px;
+        height: 256pk;
+    }
+}
 
 @media (min-width:576px) {
     .workshop-image {
@@ -28,7 +34,11 @@
         width: 64px;
         height: 64px;
     }
+    h4{
+        font-size: 1rem;
+    }
 }
+
 
 .workshop-header-float-group{
     display: flex;

@@ -22,9 +22,8 @@ async function sendRegistration(remote_config, reg_data, old,not) {
     }).then(x=>{
         not.submit("Anmelden erfolgreich",( x.data as {message:string}).message);
     },x=>{
-        console.error(x);
-
         not.submit("Fehler "+( x.response.data as {status:number}).status,( x.response.data as {message:string}).message)
+        throw new Error(x);
     });
 }
 

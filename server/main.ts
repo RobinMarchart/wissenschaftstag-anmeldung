@@ -85,6 +85,7 @@ async function run() {
         let r: request | undefined = req.body;
         let response: response = { status: 500, message: "Nicht bearbeitet" };
         let error: boolean = false;
+        let Notsend:boolean = true;
         if (requestValidation.validate(r, conf)) {
             let hash = crypto.createHash("sha256").update(r.data).digest("hex");
             if (r.remove) {
@@ -151,16 +152,19 @@ async function run() {
                 //safe request
                 let savedRequest:{timestamp:number}&wellFormedRequest=r as {timestamp:number}&wellFormedRequest;
                 savedRequest.timestamp=Date.now();
-                fs.promises.writeFile(path.join(outPath,hash+".json"),JSON.stringify(savedRequest),{encoding:"utf8"}).catch(e=>{
+                fs.promises.writeFile(path.join(outPath,hash+".json"),JSON.stringify(savedRequest),{encoding:"utf8"}).then(conf.write_curr).catch(e=>{
                     response={status:500,message:"IO Fehler"};
                     error=true
-                }).finally(()=>fullfillRequest(error,response,res,next));
+                }).finally(()=>{
+                    Notsend=false;
+                    fullfillRequest(error,response,res,next)
+                });
             }
         } else {
             response={status:400,message:"Bad Request"}
             error=true;
         }
-        fullfillRequest(error,response,res,next);
+        if(Notsend)fullfillRequest(error,response,res,next);
 
     });
     app.options("/workshops", cors())

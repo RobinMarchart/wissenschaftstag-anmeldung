@@ -25,3 +25,4 @@ src/workshops.json
 public/workshops/
 
 server-out/
+out/

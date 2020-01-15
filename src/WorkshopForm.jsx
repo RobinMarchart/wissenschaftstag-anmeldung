@@ -8,12 +8,22 @@ import "./WorkshopForm.css";
 
 export default class WorkshopForm extends React.Component {
 
+    toKey(title){
+        let workshop=this.props.Workshops.find(x=>x.title===title)
+        return workshop?workshop.key:"";
+    }
+
+    toTitle(key){
+        let workshop= this.props.Workshops.find(x=>x.key===key)
+        return workshop?workshop.title:"";
+    }
+
     constructor(props) {
         super(props)
         this.state = { workshop: getRegistration(), chosen: "", chosen2: "", send: undefined, short: false };
         if (this.state.workshop) {
-            this.state.chosen = this.state.workshop[3];
-            this.state.chosen2 = this.state.workshop[4];
+            this.state.chosen = this.toTitle(this.state.workshop[3]);
+            this.state.chosen2 = this.toTitle(this.state.workshop[4]);
         }
         this.form = {};
         this.changed = false;
@@ -35,7 +45,7 @@ export default class WorkshopForm extends React.Component {
     handleSubmit(x) {
         x.preventDefault();
         let registration = [this.form.name1.value, this.form.name2.value, this.form.class.value,
-        this.form.workshop.value, (this.state.short) ? this.form.workshop2.value : ""];
+        this.toKey(this.form.workshop.value), (this.state.short) ? this.toKey(this.form.workshop2.value) : ""];
         console.debug(registration);
         setRegistration(registration);
         let old_reg=this.state.workshop;
@@ -44,7 +54,7 @@ export default class WorkshopForm extends React.Component {
     }
 
     handleSuccessfulSubmit(x) {
-        console.log(x.message)
+        if(x&&x.message)console.log(x.message)
         this.setState({ send: true });
     }
 
@@ -77,7 +87,7 @@ export default class WorkshopForm extends React.Component {
             return <Form.Group controlId="formWorkshop2">
                 <Form.Label>Workshop</Form.Label>
                 <FormSelect
-                    defaultValue={(this.state.workshop) ? this.state.workshop[4] : null}
+                    defaultValue={(this.state.workshop) ? this.toTitle(this.state.workshop[4]) : null}
                     onChange={this.handleSecondWorkshopChange.bind(this)}
                     Ref={ref => this.form.workshop2 = ref}
                     Options={workshops.filter(x=>{
@@ -136,7 +146,7 @@ export default class WorkshopForm extends React.Component {
             <Form.Group controlId="formWorkshop">
                 <Form.Label>Workshop</Form.Label>
                 <FormSelect
-                    defaultValue={(this.state.workshop) ? this.state.workshop[3] : null}
+                    defaultValue={(this.state.workshop) ? this.toTitle(this.state.workshop[3]) : null}
                     onChange={this.handleWorkshopChange.bind(this)}
                     Ref={ref => this.form.workshop = ref}
                     Options={this.props.Workshops.filter(x=>{
@@ -144,7 +154,7 @@ export default class WorkshopForm extends React.Component {
                         if(remote){
                             remote=remote[1];
                             if(remote.short)return remote.used.first<remote.max&&this.props.availableShortWorkshops.map(x1=>x1.first.key===x.key).reduce((x2,y2)=>x2||y2,false);
-                            else return remote.used<remote.max;
+                            else return remote.max<0||remote.used<remote.max;
                         }else return true;
                     }).map(x=>x.title)} />
             </Form.Group>
