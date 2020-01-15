@@ -70,7 +70,7 @@ export class AccordionWorkshopCard extends React.Component {
                             <Badge variant="secondary">{ this.props.Workshop.short ? "45 Min." : "90 Min." }</Badge>
                         </div>
                         <div className="workshop-header-float-group">
-                            { used_max.map((x, y) => <div key={ y.toString() } className="workshop-header-float-group"><Badge variant={x[1]>=0? x[0] < x[1] ? "secondary" : "danger":"secondary" }>{x[1]>=0? "" + x[0] + "/" + x[1]: x[0] }</Badge><div className="buffer"></div></div>) }
+                            { used_max.map((x, y) => <div key={ y.toString() } className="workshop-header-float-group"><Badge variant={(x[1]&&x[1]>=0)? x[0] < x[1] ? "secondary" : "danger":"secondary" }>{(x[1]&&x[1]>=0)? "" + x[0] + "/" + x[1]: x[0] }</Badge><div className="buffer"></div></div>) }
                             <FontAwesomeIcon icon={ (this.state.collapsed) ? faAngleLeft : faAngleDown } size="lg"></FontAwesomeIcon>
                         </div>
                     </div>
