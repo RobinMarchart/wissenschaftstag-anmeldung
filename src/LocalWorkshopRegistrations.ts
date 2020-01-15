@@ -12,3 +12,6 @@ export function setRegistration(reg){
         console.error(e);
     }
 }
+export function deleteRegistration(){
+    storage.removeItem("registration")
+}

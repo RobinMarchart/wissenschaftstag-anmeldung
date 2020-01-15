@@ -32,6 +32,7 @@ class App extends React.Component{
 		if(!this.currentAvailableWorkshopsInitialized&&this.state.notificationSystem){
 			this.scheduler=new scheduler(this.getWorkshopUsage(),120000)
 			this.remote.setNot(this.state.notificationSystem);
+			this.remote.setCallback(async ()=>this.scheduler.run_now())
 			this.currentAvailableWorkshopsInitialized=true;
 		}
 		return (

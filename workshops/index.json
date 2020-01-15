@@ -3,7 +3,8 @@
 		"Survey/survey.json",
 		"Distanzermittlung/distanz.json",
 		"Blätter/blätter.json",
-		"PenGame/pen.json"
+		"PenGame/pen.json",
+		"schlaf/json.json"
 	],
 	"key":"key.asc",
 	"url":"http://localhost:4000",

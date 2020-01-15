@@ -31,14 +31,20 @@ class RemoteConnection {
 
     remote: { url: string, key: any };
     not:any;
+    callback:()=>Promise<void>
 
     constructor(config) {
         initWorker({ workers: [new pgpWorker()] });
         this.remote = { url: config.url, key: key.readArmored(config.key) };
+        this.callback=async ()=>console.debug("no remote callback");
     }
 
     send(reg_data, old) {
-        return sendRegistration(this.remote, reg_data, old,this.not);
+        return sendRegistration(this.remote, reg_data, old,this.not).then(x=>{
+
+            this.callback().catch(console.error)
+            return x;
+        });
     }
     getHandle(){
         return {send:(x1,x2)=>this.send(x1,x2)};
@@ -46,6 +52,10 @@ class RemoteConnection {
 
     setNot(not){
         this.not=not;
+    }
+
+    setCallback(callback:()=>Promise<void>){
+        this.callback=callback
     }
 
 }

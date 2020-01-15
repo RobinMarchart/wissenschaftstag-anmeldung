@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Col, Button } from "react-bootstrap";
 import { WorkshopCard } from "./WorkshopCard";
-import { getRegistration, setRegistration } from "./LocalWorkshopRegistrations";
+import { getRegistration, setRegistration, deleteRegistration } from "./LocalWorkshopRegistrations";
 import FormSelect from "./FormSelect";
 import Finished from "./Finished";
 import "./WorkshopForm.css";
@@ -60,7 +60,8 @@ export default class WorkshopForm extends React.Component {
 
     handleUnsuccessfulSubmit(e) {
         console.error(e.message);
-        this.setState({ send: false });
+        this.setState({ send: false,workshop:null });
+        deleteRegistration()
     }
 
     handleWorkshopChange(x) {
@@ -94,9 +95,10 @@ export default class WorkshopForm extends React.Component {
                         let remote=this.props.remoteWorkshops.find(x1=>x1[0]===x.key);
                         if(remote){
                             let key=remote[0];
-                            let firstKey=this.props.Workshops.find(x2=>x2.title===this.state.chosen)
+                            let firstKey=this.toKey(this.state.chosen)
                             remote=remote[1];
-                            return remote.used.second<remote.max&&this.props.availableShortWorkshops.map(x1=>x1.first.key===firstKey&&x1.second.key===key).reduce((x2,y2)=>x2||y2);
+                            let t1=this.props.availableShortWorkshops.map(x1=>x1.first===firstKey&&x1.second===key)
+                            return remote.used.second<remote.max&t1.reduce((x2,y2)=>x2||y2);
                         }else return true;
                     }).map(x=>x.title)}
                 />
@@ -153,7 +155,11 @@ export default class WorkshopForm extends React.Component {
                         let remote=this.props.remoteWorkshops.find(x1=>x1[0]===x.key);
                         if(remote){
                             remote=remote[1];
-                            if(remote.short)return remote.used.first<remote.max&&this.props.availableShortWorkshops.map(x1=>x1.first.key===x.key).reduce((x2,y2)=>x2||y2,false);
+                            if(remote.short){
+                                let t1 =this.props.availableShortWorkshops.map(x1=>x1.first===x.key)
+                                let t2=t1.reduce((x2,y2)=>x2||y2,false)
+                                return remote.used.first<remote.max&&t2;
+                            }
                             else return remote.max<0||remote.used<remote.max;
                         }else return true;
                     }).map(x=>x.title)} />
