@@ -5,7 +5,7 @@
         "src":"indigo.jpg",
         "alt":"Indigo und Stuff"
     },
-    "short":false,
+    "short":true,
     "maxParticipants":18,
     "description":"descr.md",
     "key":"DIETUMISTSEHREXZELLENT"
