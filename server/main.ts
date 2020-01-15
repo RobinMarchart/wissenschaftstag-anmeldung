@@ -7,6 +7,7 @@ import cors from "cors";
 import crypto from "crypto";
 import bodyParser from "body-parser";
 import * as config from "./config";
+import https from "https";
 
 import {NextFunction,Response} from "express";
 
@@ -15,7 +16,7 @@ import {checkWOrkshopDistribution} from "./checkShortWorkshops"
 var args = process.argv.slice(2)
 
 function wrongParams() {
-    console.error("Usage: worshop-anmeldung-server port inPath outPath")
+    console.error("Usage: worshop-anmeldung-server port inPath outPath certfile keyfile")
     process.exit(1)
 }
 
@@ -174,7 +175,10 @@ async function run() {
         res.status(200);
         res.json(Array.from(conf.current_state.entries()))
     })
-    app.listen(port);
+    if(args.length>=5){
+        https.createServer({cert:args[3],key:args[4]},app).listen(port)
+    }
+    else app.listen(port);
     console.log("server ready")
 }
 
