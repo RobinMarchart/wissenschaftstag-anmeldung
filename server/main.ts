@@ -20,7 +20,7 @@ function wrongParams() {
     process.exit(1)
 }
 
-if (!(args.length === 3)||(args.length === 5)) wrongParams();
+if (!((args.length === 3)||(args.length === 5))) wrongParams();
 var port = parseInt(args[0]);
 if (!port) wrongParams();
 var basePath = args[1];
