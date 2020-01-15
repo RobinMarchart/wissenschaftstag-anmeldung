@@ -17,6 +17,7 @@ var args = process.argv.slice(2)
 
 function wrongParams() {
     console.error("Usage: worshop-anmeldung-server port inPath outPath certfile keyfile")
+    console.log(args);
     process.exit(1)
 }
 

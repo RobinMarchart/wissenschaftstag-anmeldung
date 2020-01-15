@@ -18,7 +18,9 @@
             "args": [
                 "4000",
                 "workshops",
-                "out"
+                "out",
+                "l",
+                "b"
             ]
         },
         {
