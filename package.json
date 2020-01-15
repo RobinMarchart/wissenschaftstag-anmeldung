@@ -13,7 +13,7 @@
   ],
   "license": "MIT",
   "main": "server-out/main.js",
-  "bin": "worshop-anmeldung-server",
+  "bin": {"workshop-anmeldung-server":"./server-out/main.js"},
   "devDependencies": {
     "@babel/core": "7.7.4",
     "@fortawesome/fontawesome-svg-core": "^1.2.26",
