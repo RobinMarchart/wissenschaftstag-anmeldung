@@ -16,6 +16,14 @@ jobs:
       run: yarn --frozen-lockfile
       env:
         CI: true
+    - name: bump version
+      run: yarn version --patch;git config user.email "robin.marchart@hotmail.com";git config user.name "version bumper";git commit -am "increasing patch version"
+      env:
+        CI: true
+    - name: push bumped version back to master
+      uses: ad-m/github-push-action@v0.5.0
+      with:
+        github_token: ${{secrets.GITHUB_TOKEN}}
     - name: yarn pack 
       run: cd build;yarn pack -f wissenschaftstag-anmeldung.tgz
       env:
