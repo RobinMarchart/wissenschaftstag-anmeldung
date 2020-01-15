@@ -17,7 +17,7 @@ jobs:
       env:
         CI: true
     - name: bump version
-      run: yarn version --patch;git config user.email "robin.marchart@hotmail.com";git config user.name "version bumper";git commit -am "increasing patch version"
+      run: git config --global user.email "robin.marchart@hotmail.com";git config --global user.name "version bumper";yarn version --patch;git commit -am "increasing patch version"
       env:
         CI: true
     - name: push bumped version back to master
