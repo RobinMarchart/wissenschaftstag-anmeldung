@@ -65,6 +65,7 @@ async function run(url,watch,passthrough){
     if(watch)addListener(path.join(base,path.join(...original.key.split("/"))));
     let workshops=[];
     var picture=[0];
+    let orig_key=[]
     await out_ready;
     await Promise.all(original.workshops.map(x1=>async function(x,picture){
         let entry_base=path.dirname(path.join(...x.split("/")));
@@ -78,6 +79,7 @@ async function run(url,watch,passthrough){
         if(watch)addListener(path.join(base,entry_base,path.join(...entry.image.src.split("/"))));
         entry.image.src="workshops/"+picturename;
         entry.description=await descr;
+        orig_key.push(entry.key);
         entry.key=crypto.createHash("sha256").update(entry.key).digest("hex");
         workshops.push(entry);
         await picture_await;
@@ -88,9 +90,9 @@ async function run(url,watch,passthrough){
         console.error("non unique titles found: "+dup_title.join(" "))
         process.exit(1);
     }
-    let dup_key=duplicates(workshops.map(x=>x.key));
+    let dup_key=duplicates(orig_key);
     if(dup_key.length>0){
-        console.error("non unique keys found: "+dup_title.join(" "))
+        console.error("non unique keys found: "+dup_key.join(" "))
         process.exit(1);
     }
     await fs.promises.writeFile(path.join("src","workshops.json"),JSON.stringify({workshops:workshops,key:key_str,url:url?url:original.url,classes:original.classes}));

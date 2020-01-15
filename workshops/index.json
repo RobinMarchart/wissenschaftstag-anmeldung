@@ -4,7 +4,9 @@
 		"Distanzermittlung/distanz.json",
 		"Blätter/blätter.json",
 		"PenGame/pen.json",
-		"schlaf/json.json"
+		"schlaf/json.json",
+		"Indigo/ingo.json",
+		"Makrozoo/benthos.json"
 	],
 	"key":"key.asc",
 	"url":"http://localhost:4000",
