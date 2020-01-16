@@ -1,6 +1,6 @@
 {
   "name": "wissenschaftstag-anmeldung",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "homepage": ".",
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -13,7 +13,9 @@
   ],
   "license": "MIT",
   "main": "server-out/main.js",
-  "bin": {"workshop-anmeldung-server":"./server-out/main.js"},
+  "bin": {
+    "workshop-anmeldung-server": "./server-out/main.js"
+  },
   "devDependencies": {
     "@babel/core": "7.7.4",
     "@fortawesome/fontawesome-svg-core": "^1.2.26",
@@ -96,7 +98,7 @@
     "start-server": "yon build-server && node server-out/main.js 4000 workshops out",
     "build-server": "tsc",
     "start": "concurrently -k \"yon start-client\" \"yon start-server\"",
-    "build":"yon build-server && yon build-client",
+    "build": "yon build-server && yon build-client",
     "prepare": "yon build",
     "watch": "tsc -w"
   },
