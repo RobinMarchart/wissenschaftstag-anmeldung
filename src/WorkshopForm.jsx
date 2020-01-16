@@ -23,7 +23,10 @@ export default class WorkshopForm extends React.Component {
         this.state = { workshop: getRegistration(), chosen: "", chosen2: "", send: undefined, short: false };
         if (this.state.workshop) {
             this.state.chosen = this.toTitle(this.state.workshop[3]);
+            if(this.state.workshop.length>4){
             this.state.chosen2 = this.toTitle(this.state.workshop[4]);
+                this.state.short=true;
+            }
         }
         this.form = {};
         this.changed = false;
