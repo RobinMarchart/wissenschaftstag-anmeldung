@@ -80,7 +80,7 @@ async function run() {
     await fs.promises.access(outPath).catch(() => fs.promises.mkdir(outPath, { recursive: true }));
     await fs.promises.access(outPath, fs.constants.F_OK | fs.constants.W_OK)
 
-    let conf = await config.readConfig(basePath);
+    let conf = await config.readConfig(basePath,outPath);
 
     var app = express();
     app.options("/register", cors())
@@ -115,6 +115,7 @@ async function run() {
                         } else {
                             workshop2.used.second--;
                             workshop1.used.first--;
+
                         }
                     }
                 }
@@ -156,13 +157,15 @@ async function run() {
                 //safe request
                 let savedRequest:{timestamp:number}&wellFormedRequest=r as {timestamp:number}&wellFormedRequest;
                 savedRequest.timestamp=Date.now();
-                conf.write_curr().then(()=>
+                    Notsend=false;
+                
                 fs.promises.writeFile(path.join(outPath,hash+".json"),JSON.stringify(savedRequest),{encoding:"utf8"})
-                ).then(conf.write_curr).catch(e=>{
+                .then(conf.write_curr.bind(conf))
+                .catch(e=>{
                     response={status:500,message:"IO Fehler"};
                     error=true
+                    console.error(e);
                 }).finally(()=>{
-                    Notsend=false;
                     fullfillRequest(error,response,res,next)
                 }).catch(console.error);
             }

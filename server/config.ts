@@ -14,14 +14,16 @@ export function isShortWorkshop(workshop:Workshop): workshop is ShortWorkshop {
 export class Config {
 
     inpath: string;
+    outpath:string;
     watching: Array<fs.FSWatcher>;
     workshops: Array<FileWorkshop>;
     running: boolean;
     run_again: boolean;
     current_state: Map<string, Workshop>;
 
-    constructor(inpath: string) {
+    constructor(inpath: string,outpath:string) {
         this.inpath = inpath;
+        this.outpath=outpath;
         this.watching = [];
         this.workshops = [];
         this.running = false;
@@ -35,7 +37,7 @@ export class Config {
     }
 
      write_curr():Promise<void> {
-        return fs.promises.writeFile(path.join(this.inpath, "current_distribution.json"), JSON.stringify(Array.from(this.current_state.entries())), { encoding: "utf8" });
+        return fs.promises.writeFile(path.join(this.outpath, "current_distribution.json"), JSON.stringify(Array.from(this.current_state.entries())), { encoding: "utf8" });
     }
 
     async read():Promise<void> {
@@ -72,8 +74,8 @@ export class Config {
 
 }
 
-export async function readConfig(outPath:string):Promise<Config> {
-    let config = new Config(outPath);
+export async function readConfig(InPath:string,outPath:string):Promise<Config> {
+    let config = new Config(InPath,outPath);
     await config.read();
     return config;
 }
