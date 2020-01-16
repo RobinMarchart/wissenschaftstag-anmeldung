@@ -103,18 +103,18 @@ async function run() {
                     }
 
                 } else {
-                    let workshop1 = conf.current_state.get(r.remove.first) as config.LongWorkshop;
-                    if (workshop1.used < 1) {
+                    let workshop1 = conf.current_state.get(r.remove.first) as config.ShortWorkshop;
+                    if (workshop1.used.first < 1) {
                         response = { status: 500, message: "Fehler beim abmelden von " + workshop1.title }
                         error = true;
                     } else {
-                        workshop1.used--;
-                        let workshop2 = conf.current_state.get(r.remove.second) as config.LongWorkshop;
-                        if (workshop2.used < 1) {
+                        let workshop2 = conf.current_state.get(r.remove.second) as config.ShortWorkshop;
+                        if (workshop2.used.second < 1) {
                             response = { status: 500, message: "Fehler beim abmelden von " + workshop2.title }
                             error = true;
                         } else {
-                            workshop2.used--;
+                            workshop2.used.second--;
+                            workshop1.used.first--;
                         }
                     }
                 }
@@ -131,18 +131,18 @@ async function run() {
 
                 } else {
                     if (checkSmallWorkshopsRegistration(r.add.first, r.add.second, conf.current_state)) {
-                        let workshop1 = conf.current_state.get(r.add.first) as config.LongWorkshop;
-                        if (workshop1.used >= workshop1.max) {
+                        let workshop1 = conf.current_state.get(r.add.first) as config.ShortWorkshop;
+                        if (workshop1.used.first >= workshop1.max) {
                             response = { status: 418, message: "Nicht genug freie Plätze in " + workshop1.title };
                             error = true;
                         } else {
-                            workshop1.used++;
-                            let workshop2 = conf.current_state.get(r.add.second) as config.LongWorkshop;
-                            if (workshop2.used >= workshop2.max) {
+                            let workshop2 = conf.current_state.get(r.add.second) as config.ShortWorkshop;
+                            if (workshop2.used.second >= workshop2.max) {
                                 response = { status: 418, message: "Nicht genug freie Plätze in " + workshop2.title };
                                 error = true;
                             } else {
-                                workshop2.used++;
+                                workshop2.used.first++;
+                                workshop1.used.second++;
                             }
                         }
                     } else {
@@ -156,13 +156,15 @@ async function run() {
                 //safe request
                 let savedRequest:{timestamp:number}&wellFormedRequest=r as {timestamp:number}&wellFormedRequest;
                 savedRequest.timestamp=Date.now();
-                fs.promises.writeFile(path.join(outPath,hash+".json"),JSON.stringify(savedRequest),{encoding:"utf8"}).then(conf.write_curr).catch(e=>{
+                conf.write_curr().then(()=>
+                fs.promises.writeFile(path.join(outPath,hash+".json"),JSON.stringify(savedRequest),{encoding:"utf8"})
+                ).then(conf.write_curr).catch(e=>{
                     response={status:500,message:"IO Fehler"};
                     error=true
                 }).finally(()=>{
                     Notsend=false;
                     fullfillRequest(error,response,res,next)
-                });
+                }).catch(console.error);
             }
         } else {
             response={status:400,message:"Bad Request"}

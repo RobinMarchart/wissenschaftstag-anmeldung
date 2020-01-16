@@ -20,7 +20,8 @@ class App extends React.Component{
 
 	getWorkshopUsage(){
 		axios.get(index.url+"/workshops").then(x=>{
-			this.setState({remoteWorkshops:x.data,availableShortWorkshops:checkShortWorkshop(x.data.filter(x=>x[1].short))})
+			let shorts=x.data.filter(x2=>x2[1].short);
+			this.setState({remoteWorkshops:x.data,availableShortWorkshops:checkShortWorkshop(shorts)})
 		}).catch((e)=>{
 			console.error(e);
 			if(e.response)this.state.notificationSystem.submit("Fehler: "+e.response.status,e.response.statusText);
