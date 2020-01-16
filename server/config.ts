@@ -58,7 +58,7 @@ export class Config {
         this.watching.forEach(x => x.close())
         this.watching = watching;
         this.workshops = workshops;
-        let curr_path = path.join(this.inpath, "current_distribution.json");
+        let curr_path = path.join(this.outpath, "current_distribution.json");
         await fs.promises.access(curr_path).then(read_current.bind(null, curr_path, this.current_state, workshops), () => workshops.forEach(workshop => {
             this.current_state.set(crypto.createHash("sha256").update(workshop.key).digest("hex"), {
                 short: workshop.short,
