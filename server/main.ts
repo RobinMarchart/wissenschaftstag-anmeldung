@@ -177,7 +177,7 @@ async function run() {
         res.json(Array.from(conf.current_state.entries()))
     })
     if(args.length>=5){
-        https.createServer({cert:args[3],key:args[4]},app).listen(port)
+        https.createServer({cert:await fs.promises.readFile(args[3]),key:await fs.promises.readFile(args[4])},app).listen(port)
     }
     else app.listen(port);
     console.log("server ready")
