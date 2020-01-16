@@ -9,6 +9,6 @@
 		"Makrozoo/benthos.json"
 	],
 	"key":"key.asc",
-	"url":"http://benserver2.dyn-ip24.de:4000",
+	"url":"https://benserver2.dyn-ip24.de:4000",
 	"classes":["extern", "10a", "10b", "10c", "10d", "10e"]
 }
