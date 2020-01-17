@@ -163,7 +163,7 @@ export default class WorkshopForm extends React.Component {
                                 let t2=t1.reduce((x2,y2)=>x2||y2,false)
                                 return remote.used.first<remote.max&&t2;
                             }
-                            else return remote.max<0||remote.used<remote.max;
+                            else return remote.max||remote.used<remote.max;
                         }else return true;
                     }).map(x=>x.title)} />
             </Form.Group>
