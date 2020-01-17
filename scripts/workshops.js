@@ -63,6 +63,8 @@ async function run(url,watch,passthrough){
     if(watch)addListener(path.join(base,"index.json"));
     let key=fs.promises.readFile(path.join(base,path.join(...original.key.split("/"))),{encoding:"ascii"});
     if(watch)addListener(path.join(base,path.join(...original.key.split("/"))));
+    let descr=fs.promises.readFile(path.join(base,path.join(...original.descr.split("/"))),{encoding:"utf8"});
+    if(watch)addListener(path.join(base,path.join(...original.descr.split("/"))));
     let workshops=[];
     var picture=[0];
     let orig_key=[]
@@ -85,6 +87,7 @@ async function run(url,watch,passthrough){
         await picture_await;
     }(x1,picture)));
     let key_str=await key;
+    let descr_str=await descr
     let dup_title=duplicates(workshops.map(x=>x.title));
     if(dup_title.length>0){
         console.error("non unique titles found: "+dup_title.join(" "))
@@ -95,7 +98,7 @@ async function run(url,watch,passthrough){
         console.error("non unique keys found: "+dup_key.join(" "))
         process.exit(1);
     }
-    await fs.promises.writeFile(path.join("src","workshops.json"),JSON.stringify({workshops:workshops,key:key_str,url:url?url:original.url,classes:original.classes}));
+    await fs.promises.writeFile(path.join("src","workshops.json"),JSON.stringify({workshops:workshops,key:key_str,url:url?url:original.url,classes:original.classes,descr:descr_str}));
     running=false
     console.info("Finished processing workshops");
     if(run_again)rebuild();

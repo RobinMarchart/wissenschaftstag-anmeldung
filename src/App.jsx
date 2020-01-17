@@ -9,6 +9,7 @@ import NotificationBar from "./NotificationBar";
 import scheduler from "./scheduler";
 import checkShortWorkshop from "./checkShortWorkshops"
 import axios from "axios";
+import ReactMarkdown from "react-markdown";
 
 class App extends React.Component{
 	constructor(props){
@@ -39,6 +40,8 @@ class App extends React.Component{
 		return (
 		<div className="app">
 			<Container>
+				<ReactMarkdown escapeHtml={ false } source={index.descr}></ReactMarkdown>
+				<div className="separator"></div>
 				<Accordion>
 					{index.workshops.map((x, y) => <AccordionWorkshopCard Key={y} key={y.toString()} Workshop={x} remoteWorkshop={this.state.remoteWorkshops}></AccordionWorkshopCard>)}
 				</Accordion>

@@ -10,5 +10,6 @@
 	],
 	"key":"key.asc",
 	"url":"https://benserver2.dyn-ip24.de:4000",
+	"descr":"descr_website.md",
 	"classes":["extern", "10a", "10b", "10c", "10d", "10e"]
 }
