@@ -1,6 +1,6 @@
 {
   "name": "wissenschaftstag-anmeldung",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "homepage": ".",
   "dependencies": {
     "@awaitjs/express": "^0.4.0",
