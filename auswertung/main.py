@@ -7,8 +7,10 @@ import csv
 import aiofiles
 import os
 import itertools
+import functools
 import pathlib
 import collections
+import difflib
 
 Name=collections.namedtuple("Name",["Class","firstName","secondName"])
 Registration=collections.namedtuple("Registration",["Class","firstName","secondName","firstWorkshop","secondWorkshop","timestamp"])
@@ -57,14 +59,31 @@ async def loadReg(path):
     decrypted=json.loads(decryptedBytes.decode("utf-8", "ignore"))
     return Registration(decrypted[2],decrypted[1],decrypted[0],decrypted[3],decrypted[4],content["timestamp"])
 
-def ifNotExtern(reg:Registration,func):
-    if reg.Class=="extern":
-        return reg
-    else:
-        return func(reg)
+def findClosestClasses(classes,name):
+    if name in classes:
+        return name
+    ownClass=list(itertools.filterfalse(lambda x:x.Class!=name.Class))
+    classFirstName=[x.firstName for x in ownClass]
+    first1NameMatches=difflib.get_close_matches(name.firstName,classFirstName,n=len(classFirstName),0.6)
+    matching1FirstName=list(itertools.filterfalse(lambda y:not y in [x.firstName for x in first1NameMatches],ownClass))
+    class1SecondName=[x.secondName for x in matching1FirstName]
+    secondNameMatches1=difflib.get_close_matches(name.secondName,class1SecondName,n=len(class1SecondName),0.6)
 
-def processNotExtern(reg:Registration):
-    return reg #TODO implement
+    FirstName=[x.firstName for x in classes]
+    first2NameMatches=difflib.get_close_matches(name.firstName,FirstName,n=len(FirstName),0.7)
+    matching2FirstName=list(itertools.filterfalse(lambda y:not y in [x.firstName for x in first2NameMatches],classes))
+    class2SecondName=[x.secondName for x in matching2FirstName]
+    secondNameMatches2=difflib.get_close_matches(name.secondName,class2SecondName,n=len(class2SecondName),0.7)
+
+    if len(secondNameMatches)<1:
+        raise Exception("multiple matchingNames")
+
+def splitExtern(regs,reg:Registration):
+    if reg.Class=="extern":
+        regs[0].append(reg)
+    else:
+        regs[1].append(reg)
+    return regs
 
 async def loadRegList(path):
     files=os.listdir(path)
@@ -77,7 +96,7 @@ async def main(args):
     names=list(await namesPromise)
     regs=await regPromise
     regs_filtered=itertools.filterfalse(lambda x:x==None,regs)
-    regs_processed=[ifNotExtern(x,lambda y:processNotExtern(y)) for x in regs_filtered]
-    regs_filtered2=itertools.filterfalse(lambda x:x==None,regs_processed)
+    (extern,intern)=functools.reduce(splitExtern,regs_filtered,([],[]))
+
     #TODO implement splitting to workshop
 asyncio.run(main(args))
