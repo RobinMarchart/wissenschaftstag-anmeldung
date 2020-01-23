@@ -5,6 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python: auswertung",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/auswertung/main.py",
+            "console": "integratedTerminal",
+            "args": ["${workspaceFolder}/auswertung/workdir/lists","${workspaceFolder}/auswertung/workdir/out"]
+        },
+        {
             "type": "node",
             "request": "launch",
             "name": "Launch workshops-test",
