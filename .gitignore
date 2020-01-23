@@ -27,3 +27,4 @@ public/workshops/
 server-out/
 out/
 venv
+.vscode/settings.json

@@ -11,15 +11,31 @@ import functools
 import pathlib
 import collections
 import difflib
+import hashlib
 
 Name=collections.namedtuple("Name",["Class","firstName","secondName"])
 Registration=collections.namedtuple("Registration",["Class","firstName","secondName","firstWorkshop","secondWorkshop","timestamp"])
+WorkshopDescr=collections.namedtuple("WorkshopDescr",["title","key","max","short"])
 
 argp=argparse.ArgumentParser()
 argp.add_argument("classes")
 argp.add_argument("registration")
-argp.add_argument("--max_class_timestamp")
+argp.add_argument("workshop_base")
+argp.add_argument("out")
 args=argp.parse_args()
+
+async def readWorkshop(path):
+    workshop=None
+    async with aiofiles.open(path,encoding="utf8") as f:
+        workshop= json.loads(await f.read())
+    return WorkshopDescr(title=workshop["title"],key=hashlib.sha256(workshop["key"].encode("utf8")).hexdigest(),max=workshop["max"] if "max" in workshop else -1,short=workshop["short"])
+
+async def readWorkshops(workshop_base):
+    index=None
+    async with aiofiles.open(pathlib.Path(workshop_base,"index.json"),encoding="utf8") as f:
+        index=json.loads(await f.read())
+    workshops=[await readWorkshop(pathlib.Path(workshop_base,workshop)) for workshop in index['workshops']]
+    return workshops
 
 def flatten(iter2):
     for iter1 in iter2:
@@ -130,6 +146,7 @@ def internReduce(intern, names):
 
 
 async def main(args):
+    workshopsPromise=readWorkshops(args.workshop_base)
     namesPromise=loadClassList(args.classes)
     regPromise=loadRegList(args.registration)
     names=list(await namesPromise)
@@ -138,6 +155,6 @@ async def main(args):
     (extern,intern)=functools.reduce(splitExtern,regs_filtered,([],[]))
     registrations=internReduce(intern,names)
     registrations.extend(externReduce(extern))
-    print(registrations)
+    print(await workshopsPromise)
     #TODO implement splitting to workshop
 asyncio.run(main(args))

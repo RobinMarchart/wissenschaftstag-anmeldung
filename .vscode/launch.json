@@ -10,7 +10,12 @@
             "request": "launch",
             "program": "${workspaceFolder}/auswertung/main.py",
             "console": "integratedTerminal",
-            "args": ["${workspaceFolder}/auswertung/workdir/lists","${workspaceFolder}/auswertung/workdir/out"]
+            "args": [
+                "${workspaceFolder}/auswertung/workdir/lists",
+                "${workspaceFolder}/auswertung/workdir/out",
+                "${workspaceFolder}/workshops",
+                "${workspaceFolder}/auswertung/workdir/output"
+            ]
         },
         {
             "type": "node",
