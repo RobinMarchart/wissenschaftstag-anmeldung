@@ -12,6 +12,7 @@ import pathlib
 import collections
 import difflib
 import hashlib
+import io
 
 Name=collections.namedtuple("Name",["Class","firstName","secondName"])
 Registration=collections.namedtuple("Registration",["Class","firstName","secondName","firstWorkshop","secondWorkshop","timestamp"])
@@ -28,7 +29,8 @@ async def readWorkshop(path):
     workshop=None
     async with aiofiles.open(path,encoding="utf8") as f:
         workshop= json.loads(await f.read())
-    return WorkshopDescr(title=workshop["title"],key=hashlib.sha256(workshop["key"].encode("utf8")).hexdigest(),max=workshop["max"] if "max" in workshop else -1,short=workshop["short"])
+    maxW=workshop["maxParticipants"] if "maxParticipants" in workshop else -1
+    return WorkshopDescr(title=workshop["title"],key=hashlib.sha256(workshop["key"].encode("utf8")).hexdigest(),max=maxW,short=workshop["short"])
 
 async def readWorkshops(workshop_base):
     index=None
@@ -46,7 +48,7 @@ async def loadCLass(path):
     async with aiofiles.open(path, mode='r',encoding="utf8") as f:
         content=await f.read()
         rows=[x.split(";") for x in content.split("\n")]
-        return [Name(row[2],row[1],row[0]) for row in rows]
+        return [Name(row[2],row[0],row[1]) for row in rows]
 
 async def loadClassList(path):
     files=os.listdir(path)
@@ -76,22 +78,23 @@ async def loadReg(path):
     return Registration(decrypted[2],decrypted[1],decrypted[0],decrypted[3],decrypted[4],content["timestamp"])
 
 def findClosestClasses(classes,name,deviation=0.5):
-    if functools.reduce(lambda x,y:y or (x.Class.lower()==name.Class and x.firstName.lower()==name.firstName.lower() and x.secondName.lower()==name.secondName.lower()), classes):
-        return name
-    ownClass=list(itertools.filterfalse(lambda x:x.Class.lower()!=name.Class.lower()))
+    same=list(itertools.filterfalse(lambda x:not((x.Class.lower()==name.Class.lower()) and (x.firstName.lower()==name.firstName.lower()) and (x.secondName.lower()==name.secondName.lower())), classes))
+    if len(same)>0:
+        return same[0]
+    ownClass=list(itertools.filterfalse(lambda x:x.Class.lower()!=name.Class.lower(),classes))
     classFirstName=set([x.firstName.lower() for x in ownClass])
     classFirstNameMatches=difflib.get_close_matches(name.firstName.lower(),classFirstName,n=len(classFirstName),cutoff=deviation)
     classMatchingFirstName=list(itertools.filterfalse(lambda x:not x.firstName.lower() in classFirstNameMatches,ownClass))
     classSecondName=set([x.secondName.lower() for x in classMatchingFirstName])
-    classSecondNameMatches=difflib.get_close_matches(name.secondName.lower(), classSecondName,n=len(classSecondName),cutoff=deviation)
-    classMatches=list(itertools.filterfalse(lambda x:not x.secondName.lower() in classSecondNameMatches))
+    classSecondNameMatches=difflib.get_close_matches(name.secondName.lower(), classSecondName,n=len(classSecondName),cutoff=deviation) if len(classSecondName)>0 else []
+    classMatches=list(itertools.filterfalse(lambda x:not x.secondName.lower() in classSecondNameMatches,classMatchingFirstName))
     
     FirstName=set([x.firstName.lower() for x in ownClass])
     FirstNameMatches=difflib.get_close_matches(name.firstName.lower(),FirstName,n=len(FirstName),cutoff=deviation+0.1)
     MatchingFirstName=list(itertools.filterfalse(lambda x:not x.firstName.lower() in FirstNameMatches,ownClass))
     SecondName=set([x.secondName.lower() for x in MatchingFirstName])
-    SecondNameMatches=difflib.get_close_matches(name.secondName.lower(), SecondName,n=len(SecondName),cutoff=deviation+0.1)
-    matches=set(itertools.filterfalse(lambda x:not x.secondName.lower() in classSecondNameMatches)).union(set(classMatches))
+    SecondNameMatches=difflib.get_close_matches(name.secondName.lower(), SecondName,n=len(SecondName),cutoff=deviation+0.1) if len(SecondName)>0 else []
+    matches=set(itertools.filterfalse(lambda x:not x.secondName.lower() in SecondNameMatches,MatchingFirstName)).union(set(classMatches))
 
     if len(matches)>1:
         if(deviation<0.9):
@@ -131,9 +134,12 @@ async def loadRegList(path):
     paths=[pathlib.Path(path,file) for file in files]
     return [await loadReg(x) for x in paths]
 
+def regToName(reg):
+    return Name(reg.Class,reg.firstName,reg.secondName)
+
 def externReduce(extern):
-    names=[(k,list([x[0] for x in g]))for k,g in itertools.groupby(sorted(extern))]
-    namesSorted=[(k,sorted(g)[-1])for k,g in names]
+    names=[(k,list(g))for k,g in itertools.groupby(sorted(extern,key=regToName),regToName)]
+    namesSorted=[(k,sorted(g,key=lambda x:x.timestamp)[-1])for k,g in names]
     return namesSorted
 
 def internReduce(intern, names):
@@ -144,6 +150,36 @@ def internReduce(intern, names):
     lastRegistrations=[(k,g[-1])for k,g in sortedRegistration]
     return lastRegistrations
 
+def findWorkshop(workshops,key):
+    return next((x for x in workshops if x.key==key),None)
+
+
+async def writePerWorkshop(workshop,basepath):
+    out=io.StringIO()
+    writer=csv.writer(out,"excel")
+    writer.writerow(["Name","Vorname","Klasse"])
+    writer.writerows([[x[0].firstName,x[0].secondName,x[0].Class] for x in workshop[1]])
+    async with aiofiles.open(pathlib.PurePath(basepath,"{}.csv".format(workshop[0].title)),mode="w") as f:
+        await f.write(out.getvalue())
+    out.close()
+
+async def writePerWorkshop2(workshop,workshops,basepath):
+    out=io.StringIO()
+    writer=csv.writer(out,"excel")
+    writer.writerow(["Name","Vorname","Klasse"])
+    writer.writerows([[x[0].firstName,x[0].secondName,x[0].Class] for x in workshop[1]])
+    async with aiofiles.open(pathlib.PurePath(basepath,"{}2.csv".format(findWorkshop(workshops,workshop[0]).title)),mode="w") as f:
+        await f.write(out.getvalue())
+    out.close()
+
+async def writePerClass(workshop,Class,basepath):
+    out=io.StringIO()
+    writer=csv.writer(out,"excel")
+    writer.writerow(["Name","Vorname","Workshop1","Workshop2"])
+    writer.writerows(workshop)
+    async with aiofiles.open(pathlib.PurePath(basepath,"{}.csv".format(Class)),mode="w") as f:
+        await f.write(out.getvalue())
+    out.close()
 
 async def main(args):
     workshopsPromise=readWorkshops(args.workshop_base)
@@ -155,6 +191,46 @@ async def main(args):
     (extern,intern)=functools.reduce(splitExtern,regs_filtered,([],[]))
     registrations=internReduce(intern,names)
     registrations.extend(externReduce(extern))
-    print(await workshopsPromise)
+    workshops=await workshopsPromise
+    workshopRegistration =[(y,x,findWorkshop(workshops,x.firstWorkshop)) for y,x in registrations]
+    tmp=[x for x,y in registrations]
+    unused=set(names)-set(tmp)
+
+    groupedWorkshops=[(findWorkshop(workshops,k),list(g)) for k,g in itertools.groupby(sorted(workshopRegistration,key=lambda x:x[2].key),lambda x:x[2].key)]
+
+    add=[(w,[]) for w in set(workshops)-set([x[0] for x in groupedWorkshops])]
+    groupedWorkshops.extend(add)
+
+    for why in unused:
+        sort=sorted(filter(lambda x:x[0].max>len(x[1]) if x[0].max!=-1 else True,groupedWorkshops),key=lambda x:len(x[1]))
+        sort[0][1].append((why,None,sort[0][0]))
+
+    try:
+        os.mkdir(args.out)
+    except:
+        pass
+    for perWorkshop in [writePerWorkshop(x,args.out) for x in groupedWorkshops]:
+        await perWorkshop
+    
+    shorts=list(flatten([x[1] for x in filter(lambda y:y[0].short,groupedWorkshops)]))
+
+    shortsSorted=list(filter(lambda x:x[0]!='',[(k,list(g)) for k,g in itertools.groupby(sorted(filter(lambda x:x[1]!=None,shorts),key=lambda x:x[1].secondWorkshop),lambda x:x[1].secondWorkshop)]))
+
+    unused2=set(shorts)-set(flatten([x[1] for x in shortsSorted]))
+    add2=[(w,[]) for w in set([x.key for x in filter(lambda x:x.short,workshops)])-set([x[0] for x in shortsSorted])]
+    shortsSorted.extend(add2)
+
+    for why in unused2:
+        sort=sorted(filter(lambda x:findWorkshop(workshops,x[0]).max>len(x[1]) if findWorkshop(workshops,x[0]).max!=-1 else True,filter(lambda x:x[0]!=why[2].key,shortsSorted)),key=lambda x:len(x[1]))
+        sort[0][1].append((why[0],None,sort[0][0]))
+
+    for perWorkshop in [writePerWorkshop2(x,workshops,args.out) for x in shortsSorted]:
+        await perWorkshop
+
+    for perClass in itertools.groupby(sorted(names,key=lambda x:x.Class),lambda x:x.Class):
+        ls=[(x.firstName,x.secondName,next((y for y in flatten([z[1] for z in groupedWorkshops]) if y[0]==x))[2].title,
+          next(iter([findWorkshop(workshops,b[1]).title for b in (y for y in flatten([[(a[0],z[0]) for a in z[1]] for z in shortsSorted]) if y[0]==x)]),"")) for x in perClass[1]]
+        await writePerClass(ls,perClass[0],args.out)
+
     #TODO implement splitting to workshop
 asyncio.run(main(args))
